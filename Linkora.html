@@ -77,6 +77,64 @@ footer{border-top-color:#c7ff4d20;background:#0b0e0c55}
 @media(max-width:640px){.hero{padding:58px 0 36px}.hero:after{right:0;top:8%;opacity:.6}.hero h1{font-size:clamp(42px,12vw,64px)}.nav{gap:10px}.nav nav{order:3;flex-basis:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}.nav nav a{white-space:nowrap}.grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,235px),1fr))}.card{padding:16px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
+
+/* Linkora dark-centred animated atmosphere */
+body{isolation:isolate;overflow-x:hidden;background:#070908;background-image:radial-gradient(ellipse at 50% -15%,#c7ff4d0d,transparent 45%),linear-gradient(180deg,#080a09 0%,#0b100c 48%,#080a09 100%);background-attachment:fixed}
+body:before{z-index:0;opacity:.12;background-image:radial-gradient(#c7ff4d 0.7px,transparent 0.9px),radial-gradient(#d5e8d0 0.5px,transparent 0.8px);background-size:44px 44px,83px 83px;background-position:0 0,17px 25px;animation:linkora-star-drift 85s linear infinite;mask-image:linear-gradient(to bottom,#000 0%,#000 45%,transparent 100%)}
+body:after{content:"";position:fixed;z-index:0;inset:-24%;pointer-events:none;opacity:.62;filter:blur(36px);transform:translate3d(0,0,0);background:radial-gradient(ellipse at 22% 28%,#baff3b13 0%,transparent 29%),radial-gradient(ellipse at 76% 34%,#48735b22 0%,transparent 32%),radial-gradient(ellipse at 53% 75%,#8ebc4510 0%,transparent 33%);background-size:140% 140%;animation:linkora-aurora 26s ease-in-out infinite alternate}
+header,main,footer{position:relative;z-index:1}
+header{background:#080b09d9;border-bottom-color:#c7ff4d24}
+.nav{justify-content:center;text-align:center;gap:12px 18px}
+.logo{flex:1 0 100%;justify-content:center;font-size:26px;letter-spacing:-.8px}
+.nav nav{flex:1 0 100%;justify-content:center;order:0}
+.nav nav a{font-size:14px}
+.nav #sbtn{margin-inline:auto}
+main{padding-top:24px}
+h1,h2,h3{text-align:center}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:76px 0 54px}
+.hero h1{width:100%;max-width:920px;margin-inline:auto;text-align:center;font-size:clamp(48px,8.3vw,88px);letter-spacing:-.07em;line-height:.98;text-wrap:balance}
+.hero p{margin:22px auto 0;max-width:620px;text-align:center;text-wrap:pretty}
+.hero:after{right:auto;left:50%;top:3%;transform:translateX(-50%);width:clamp(190px,31vw,320px);opacity:.58;background:radial-gradient(circle at 50% 50%,#c7ff4d12,transparent 67%);box-shadow:inset 0 0 75px #c7ff4d08,0 0 120px #c7ff4d08;animation:linkora-centre-orbit 12s ease-in-out infinite alternate}
+.hero>*{position:relative;z-index:1}
+.hero #hq{display:block;max-width:680px;margin-inline:auto;text-align:left}
+.hero .row{justify-content:center}
+.sec{margin-top:58px}
+.sec>h2{margin:0 auto 20px;text-align:center;font-size:clamp(24px,3.2vw,32px);text-wrap:balance}
+.grid{gap:18px}
+.card{background:linear-gradient(145deg,#111612ee,#0c100ded);border-color:#253026cc;backdrop-filter:blur(9px)}
+.card .top{flex-direction:column;justify-content:center;text-align:center;gap:10px}
+.card .top>div:last-child{text-align:center;max-width:100%}
+.card h3{text-align:center;text-wrap:balance}
+.card p{text-align:center}
+.card .chips{justify-content:center}
+.card>.btn{align-self:center}
+.logoT{width:52px;height:52px;border-radius:16px;background:#121a12!important;border-color:#c7ff4d20}
+.lab{text-align:center;background:radial-gradient(ellipse at 50% 0%,#c7ff4d12,transparent 62%),linear-gradient(145deg,#111810f0,#0c100dec);border-color:#394a2c}
+.lab>p{max-width:700px;margin-inline:auto}
+footer{background:#07090899;text-align:center}
+footer>div:first-child{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:650;letter-spacing:.01em}
+.empty{text-align:center;background:#ffffff02}
+#toast{z-index:9}
+@keyframes linkora-aurora{0%{transform:translate3d(-2%,1%,0) scale(1);background-position:0% 50%}50%{transform:translate3d(2%,-1%,0) scale(1.045);background-position:80% 20%}100%{transform:translate3d(-1%,2%,0) scale(1.02);background-position:25% 90%}}
+@keyframes linkora-star-drift{from{background-position:0 0,17px 25px}to{background-position:440px 660px,-315px 415px}}
+@keyframes linkora-centre-orbit{from{transform:translateX(-50%) scale(.96);opacity:.34}to{transform:translateX(-50%) scale(1.07);opacity:.72}}
+@media(max-width:640px){
+ .nav{padding:12px 14px;gap:10px}
+ .logo{font-size:24px}
+ .nav nav{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;max-width:100%;padding:0 0 5px}
+ .nav nav a{white-space:nowrap;padding:6px 10px}
+ .hero{padding:56px 0 36px}
+ .hero h1{font-size:clamp(42px,11.7vw,64px)}
+ .hero:after{top:3%;width:220px}
+ .sec{margin-top:44px}
+ .grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,235px),1fr))}
+ .card{padding:17px}
+ .lab{padding:22px 17px}
+}
+@media(prefers-reduced-motion:reduce){
+ body:before,body:after,.hero:after{animation:none!important}
+}
+
 </style></head><body>
 <header><div class="nav"><a class="logo" href="#/"><i></i>Linkora</a>
 <nav aria-label="Main"><a href="#/" data-n="home">Home</a><a href="#/explore" data-n="explore">Explore</a><a href="#/categories" data-n="categories">Categories</a><a href="#/lab" data-n="lab">Automation Lab</a><a href="#/manage" data-n="manage">Manage</a><a href="#/about" data-n="about">About</a></nav>
