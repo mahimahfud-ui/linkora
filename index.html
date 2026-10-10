@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Linkora</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#121413;--s:#1b1e1c;--s2:#242825;--bd:#2f3431;--tx:#f4f6f2;--mu:#9aa39d;--ac:#b8f23a;--acx:#14180a;--wr:#f2b84b;--er:#ff7a6b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 400px at 80% -10%,#26311a55,transparent),var(--bg);color:var(--tx);font:16px/1.55 "Segoe UI",system-ui,sans-serif}
+a{color:inherit;text-decoration:none}h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.01em;margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:#121413ee;border-bottom:1px solid var(--bd);backdrop-filter:blur(8px)}
+.nav{max-width:1100px;margin:auto;padding:12px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.logo{font-family:Georgia,serif;font-size:22px;font-weight:700;display:flex;gap:8px;align-items:center}.logo i{width:22px;height:22px;border-radius:7px;background:var(--ac);display:inline-block}
+.nav nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}.nav nav a{padding:6px 12px;border-radius:8px;color:var(--mu)}.nav nav a.on,.nav nav a:hover{color:var(--tx);background:var(--s2)}
+main{max-width:1100px;margin:auto;padding:28px 20px 60px}
+.hero{padding:56px 0 36px;max-width:720px}.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.04}.hero p{color:var(--mu);font-size:18px;max-width:560px}
+input,select,textarea{width:100%;background:var(--s);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:11px 14px;font:inherit}
+textarea{min-height:170px;font-family:ui-monospace,Consolas,monospace;font-size:14px}
+.btn{display:inline-block;border:1px solid var(--bd);background:var(--s2);color:var(--tx);padding:9px 16px;border-radius:10px;cursor:pointer;font:inherit}.btn:hover{border-color:var(--ac)}
+.btn.p{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:600}.btn.sm{padding:5px 10px;font-size:13px}.btn.d{color:var(--er)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.mt{margin-top:18px}.mu{color:var(--mu)}.sec{margin-top:44px}.sec>h2{font-size:26px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card:hover{border-color:#4a5a30}.card h3{font-size:18px}.card p{margin:0;color:var(--mu);font-size:14px;flex:1}
+.logoT{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:700;color:var(--acx);flex:none}
+.top{display:flex;gap:12px;align-items:center}.dom{font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{font-size:12px;border:1px solid var(--bd);border-radius:20px;padding:1px 9px;color:var(--mu)}
+.warn{border:1px solid #6b5420;background:#2a2312;color:var(--wr);border-radius:10px;padding:8px 10px;font-size:13px}
+.bad{border-color:#6b2e27;background:#2a1512;color:var(--er)}
+.cat{cursor:pointer;text-align:left;color:inherit;font:inherit}.cat b{font-size:22px;color:var(--ac)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--bd);background:none;color:var(--mu);border-radius:20px;padding:5px 13px;cursor:pointer;font:inherit}.chip.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+.empty{border:1px dashed var(--bd);border-radius:14px;padding:36px;text-align:center;color:var(--mu)}
+.lab{background:linear-gradient(135deg,#222c14,var(--s));border:1px solid #3d4d22;border-radius:16px;padding:26px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 6px}pre{background:#0d0f0e;border:1px solid var(--bd);border-radius:10px;padding:14px;overflow-x:auto;font-size:13px;max-height:380px}
+.tbl{overflow-x:auto}.rev{display:grid;gap:10px;grid-template-columns:1fr 1fr 160px;margin:8px 0}
+footer{border-top:1px solid var(--bd);padding:26px 20px;text-align:center;color:var(--mu);font-size:14px}footer a{margin:0 10px}footer a:hover{color:var(--tx)}
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--ac);padding:9px 16px;border-radius:10px;display:none;z-index:9}
+@media(max-width:640px){.rev{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
+
+/* Linkora visual refresh */
+:root{--bg:#0b0e0c;--s:#121713;--s2:#1a211b;--bd:#29352c;--tx:#f4f8f1;--mu:#9ca99f;--ac:#c7ff4d;--acx:#111807;--wr:#ffd166;--er:#ff8178}
+body{background:radial-gradient(ellipse at 12% 0%,#b8f23a13,transparent 34%),radial-gradient(ellipse at 92% 18%,#6dd5ed0c,transparent 28%),linear-gradient(180deg,#0b0e0c,#0d110e 50%,#0a0c0b);background-attachment:fixed}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.14;background-image:radial-gradient(#a9c58c 0.6px,transparent .6px);background-size:20px 20px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+header{background:#0b0e0cce;border-bottom-color:#c7ff4d24;box-shadow:0 10px 35px #0002;backdrop-filter:blur(18px) saturate(145%)}
+.nav{max-width:1180px;padding-top:14px;padding-bottom:14px}
+.logo{font-size:24px;letter-spacing:-.7px}.logo i{box-shadow:0 0 24px #c7ff4d48;transform:rotate(-8deg);transition:transform .3s ease}.logo:hover i{transform:rotate(35deg) scale(1.08)}
+.nav nav a{transition:color .2s ease,background .2s ease,transform .2s ease}.nav nav a:hover{transform:translateY(-1px)}
+main{max-width:1180px;padding-top:30px}
+.hero{position:relative;isolation:isolate;max-width:none;padding:82px 0 58px;animation:rise-in .75s cubic-bezier(.2,.7,.2,1) both}
+.hero:after{content:"";position:absolute;z-index:-1;right:2%;top:15%;width:clamp(130px,22vw,260px);aspect-ratio:1;border:1px solid #c7ff4d22;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c7ff4d18,transparent 62%);box-shadow:inset 0 0 50px #c7ff4d08,0 0 80px #c7ff4d08;animation:orbit-glow 8s ease-in-out infinite alternate}
+.hero h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(46px,8vw,86px);font-weight:760;letter-spacing:-.065em;line-height:.99;max-width:780px;background:linear-gradient(110deg,#fff 5%,#e3f6d4 48%,#c7ff4d 105%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:clamp(16px,2vw,20px);line-height:1.75;max-width:590px;margin-top:22px}
+input,select,textarea{background:#111612d9;border-color:#334136;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
+input:focus,select:focus,textarea:focus{border-color:#c7ff4d99;box-shadow:0 0 0 4px #c7ff4d12;outline:none;background:#121a13}
+.btn{border-radius:12px;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}
+.btn:hover{transform:translateY(-2px);border-color:#c7ff4d88;box-shadow:0 8px 22px #0002}
+.btn.p{box-shadow:0 6px 24px #c7ff4d12}.btn.p:hover{background:#d6ff78;box-shadow:0 8px 28px #c7ff4d20}
+.sec{margin-top:54px}.sec>h2{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(23px,3vw,30px);letter-spacing:-.04em}
+.grid{gap:16px}
+.card{position:relative;overflow:hidden;background:linear-gradient(145deg,#151b16ed,#101411ed);border-color:#2b382d;border-radius:18px;padding:19px;box-shadow:0 8px 28px #00013;animation:rise-in .55s both;transition:transform .28s cubic-bezier(.2,.7,.2,1),border-color .28s ease,box-shadow .28s ease,background .28s ease}
+.card:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#c7ff4d45,transparent);opacity:.7}
+.card:hover{transform:translateY(-5px);border-color:#a8d94b72;box-shadow:0 18px 42px #0003,0 0 0 1px #c7ff4d0b;background:linear-gradient(145deg,#19221a,#111612)}
+.grid>.card:nth-child(3n+2){animation-delay:70ms}.grid>.card:nth-child(3n){animation-delay:130ms}
+.card h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.card p{line-height:1.65}
+.logoT{width:48px;height:48px;border-radius:15px;background:#20291e!important;border:1px solid #ffffff12;box-shadow:inset 0 1px #ffffff0c;overflow:hidden}
+.logoT img{width:100%;height:100%;object-fit:contain;padding:8px;display:block}
+.tag{border-color:#ffffff14;background:#ffffff04;padding:3px 10px}
+.chip{transition:all .2s ease}.chip:hover{color:var(--tx);border-color:#c7ff4d70}.chip.on{box-shadow:0 4px 18px #c7ff4d13}
+.empty{background:#ffffff03;border-color:#43513f}
+.lab{background:radial-gradient(ellipse at 100% 0%,#c7ff4d14,transparent 50%),linear-gradient(135deg,#182116,#111612);border-color:#526b32;border-radius:20px;box-shadow:0 16px 48px #0002}
+.lab h2{font-family:ui-sans-serif,system-ui,sans-serif}
+footer{border-top-color:#c7ff4d20;background:#0b0e0c55}
+#toast{box-shadow:0 12px 40px #0006;backdrop-filter:blur(12px)}
+@keyframes rise-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes orbit-glow{from{transform:translate3d(0,0,0) scale(.96);opacity:.65}to{transform:translate3d(-12px,10px,0) scale(1.04);opacity:1}}
+@media(max-width:640px){.hero{padding:58px 0 36px}.hero:after{right:0;top:8%;opacity:.6}.hero h1{font-size:clamp(42px,12vw,64px)}.nav{gap:10px}.nav nav{order:3;flex-basis:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}.nav nav a{white-space:nowrap}.grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,235px),1fr))}.card{padding:16px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+</style></head><body>
+<header><div class="nav"><a class="logo" href="#/"><i></i>Linkora</a>
+<nav aria-label="Main"><a href="#/" data-n="home">Home</a><a href="#/explore" data-n="explore">Explore</a><a href="#/categories" data-n="categories">Categories</a><a href="#/lab" data-n="lab">Automation Lab</a><a href="#/manage" data-n="manage">Manage</a><a href="#/about" data-n="about">About</a></nav>
+<a class="btn sm" href="#/explore" id="sbtn">Search</a></div></header>
+<main id="app"></main>
+<footer><div>Linkora · Discover useful tools. Build smarter workflows.</div><div class="mt"><a href="#/">Home</a><a href="#/explore">Explore</a><a href="#/categories">Categories</a><a href="#/lab">Automation Lab</a><a href="#/about">About</a></div></footer>
+<div id="toast" role="status"></div>
+<script>
+const CATS=[["ai","AI Tools","✦"],["dev","Developer Tools","</>"],["prod","Productivity","✓"],["design","Design & Creative","◐"],["edu","Education","◉"],["conv","File Conversion","⇄"],["cloud","Cloud & Storage","☁"],["social","Social Media Tools","@"],["sec","Privacy & Security","◈"],["comm","Communication","✉"],["ent","Entertainment","▶"],["other","Other","•"]];
+const SEED=[
+{id:"s1",name:"NowLookup",url:"https://nowlookup.com",cat:"sec",desc:"Initial entry, not yet reviewed. Appears related to phone-number or identity lookups; verify before use.",tags:["lookup","phone"],added:"2026-10-10",featured:false,status:"active",flag:"Involves phone-number information. Review its privacy practices before entering any personal data."},
+{id:"s2",name:"SMS24",url:"https://sms24.me",cat:"comm",desc:"Initial entry, not yet reviewed. Lists public SMS inboxes that anyone can read.",tags:["sms","public inbox"],added:"2026-10-10",featured:false,status:"active",flag:"Public SMS inboxes expose every message to all visitors. Never use them for accounts, passwords or anything private."},
+{id:"s3",name:"CallBomberz",url:"https://callbomberz.in",cat:"comm",desc:"Initial entry, not yet reviewed. Name suggests bulk calling or message flooding.",tags:["bulk calling"],added:"2026-10-10",featured:false,status:"active",flag:"Services that flood people with calls or texts can be harassment and may be illegal. Listed for awareness only, not endorsed."}];
+const $=s=>document.querySelector(s),app=$("#app");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let data,toastT;
+function load(){try{const r=localStorage.getItem("linkora.v1");data=r?JSON.parse(r):null}catch(e){data=null}
+ if(!data||!Array.isArray(data.sites))data={sites:SEED.slice(),cats:CATS.map(c=>({id:c[0],name:c[1],icon:c[2]}))}}
+function save(){try{localStorage.setItem("linkora.v1",JSON.stringify(data))}catch(e){toast("Could not save in this browser")}}
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toastT);toastT=setTimeout(()=>t.style.display="none",2400)}
+const catName=id=>(data.cats.find(c=>c.id===id)||{name:"Other"}).name;
+const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return u}};
+function hue(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))%360;return h}
+function logo(n,u){const ini=(n.match(/[A-Za-z0-9]/g)||["?"]).slice(0,2).join("").toUpperCase();const fallback=esc(ini);const icon="https://www.google.com/s2/favicons?domain="+encodeURIComponent(host(u||""))+"&sz=128";return `<div class="logoT" aria-hidden="true" style="background:hsl(${hue(n)} 70% 70%)"><img src="${esc(icon)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='${fallback}'"></div>`}
+function card(s){return `<article class="card"><div class="top">${logo(s.name,s.url)}<div style="min-width:0"><h3>${esc(s.name)}</h3><div class="dom">${esc(host(s.url))}</div></div></div>
+<p>${esc(s.desc)}</p>${s.flag?`<div class="warn bad">⚠ ${esc(s.flag)}</div>`:""}
+<div class="chips"><span class="tag">${esc(catName(s.cat))}</span>${(s.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+<a class="btn sm" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer nofollow">Visit site</a></article>`}
+const active=()=>data.sites.filter(s=>s.status==="active");
+let F={q:"",cat:"",sort:"new"};
+function home(){const a=active(),feat=a.filter(s=>s.featured).slice(0,3),rec=[...a].sort((x,y)=>y.added.localeCompare(x.added)).slice(0,6);
+return `<section class="hero"><h1>The internet, organized.</h1><p>Linkora collects useful online tools in one place, sorted by category and searchable in a keystroke.</p>
+<div class="mt"><input id="hq" type="search" placeholder="Search tools, tags, categories" aria-label="Search tools" autocomplete="off"></div>
+<div class="row mt"><a class="btn p" href="#/categories">Explore categories</a><a class="btn" href="#/explore">Browse all tools</a></div></section>
+<section class="sec"><h2>Featured tools</h2>${feat.length?`<div class="grid">${feat.map(card).join("")}</div>`:`<div class="empty">Nothing featured yet. Star a tool from Manage.</div>`}</section>
+<section class="sec"><h2>Categories</h2><div class="grid">${catCards()}</div></section>
+<section class="sec"><h2>Recently added</h2><div class="grid">${rec.map(card).join("")}</div></section>
+<section class="sec lab"><h2>Automation Lab</h2><p class="mu">Paste a tutorial or transcript. Linkora pulls out the steps and scaffolds a Python project with a dry-run mode, config and tests.</p><a class="btn p" href="#/lab">Open the lab</a></section>`}
+function catCards(){return data.cats.map(c=>{const n=active().filter(s=>s.cat===c.id).length;return `<button class="card cat" data-act="cat" data-id="${esc(c.id)}"><b>${esc(c.icon)}</b><h3>${esc(c.name)}</h3><span class="mu">${n} tool${n===1?"":"s"}</span></button>`}).join("")}
+function filtered(){const q=F.q.trim().toLowerCase();let r=active().filter(s=>(!F.cat||s.cat===F.cat)&&(!q||[s.name,s.desc,catName(s.cat),(s.tags||[]).join(" ")].join(" ").toLowerCase().includes(q)));
+ r.sort(F.sort==="az"?(a,b)=>a.name.localeCompare(b.name):(a,b)=>b.added.localeCompare(a.added));return r}
+function explore(){return `<h1>Explore</h1><div class="row mt"><input id="eq" type="search" style="flex:2;min-width:200px" placeholder="Search by name, description or tag" aria-label="Search" value="${esc(F.q)}">
+<select id="es" style="flex:1;min-width:150px" aria-label="Sort"><option value="new"${F.sort==="new"?" selected":""}>Recently added</option><option value="az"${F.sort==="az"?" selected":""}>A to Z</option></select></div>
+<div class="chips mt"><button class="chip${F.cat?"":" on"}" data-act="cat" data-id="">All</button>${data.cats.map(c=>`<button class="chip${F.cat===c.id?" on":""}" data-act="cat" data-id="${esc(c.id)}">${esc(c.name)}</button>`).join("")}</div>
+<div class="row mt"><span class="mu" id="cnt"></span><button class="btn sm" data-act="clear">Clear filters</button></div><div class="grid mt" id="res"></div>`}
+function results(){const r=filtered();$("#cnt").textContent=`${r.length} result${r.length===1?"":"s"}`;$("#res").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1">No tools match. Try another word or clear the filters.</div>`}
+function categories(){return `<h1>Categories</h1><div class="grid mt">${catCards()}</div>`}
+function about(){return `<h1>About Linkora</h1><p class="mu" style="max-width:640px">Linkora is a curated directory of online tools. Entries are added only after you approve them. Services involving public SMS inboxes, phone numbers or bulk messaging carry a visible caution, and nothing here is an endorsement.</p>
+<p class="mu" style="max-width:640px">This version runs entirely in your browser. Your changes are stored in this browser only, so they are not shared and can be lost if you clear site data. Export JSON from Manage to back them up.</p>`}
+/* manage */
+let P=[];
+function manage(){const all=data.sites;return `<h1>Manage</h1><div class="warn mt">This page has no login. It edits only your own browser's copy. Shared, protected admin needs a backend with real authentication, which is not configured.</div>
+<section class="sec"><h2>Add from transcript</h2><textarea id="tx" placeholder="Paste a transcript or text containing website names and links"></textarea><div class="row mt"><button class="btn p" data-act="extract">Extract websites</button><span class="mu" id="xmsg"></span></div><div id="prev"></div></section>
+<section class="sec"><h2>Directory (${all.length})</h2><div class="row"><button class="btn sm" data-act="export">Export JSON</button><label class="btn sm">Import JSON<input id="imp" type="file" accept="application/json" hidden></label></div>
+<div class="tbl mt">${all.map(s=>`<div class="card" style="margin-bottom:8px"><div class="row"><b>${esc(s.name)}</b><span class="mu dom">${esc(s.url)}</span><span class="tag">${esc(s.status)}</span></div><div class="row"><button class="btn sm" data-act="feat" data-id="${s.id}">${s.featured?"Unfeature":"Feature"}</button><button class="btn sm" data-act="arch" data-id="${s.id}">${s.status==="active"?"Archive":"Restore"}</button><button class="btn sm d" data-act="del" data-id="${s.id}">Delete</button></div></div>`).join("")}</div></section>
+<section class="sec"><h2>Add a category</h2><div class="row"><input id="nc" style="flex:1;min-width:180px" placeholder="Category name" aria-label="Category name"><button class="btn" data-act="addcat">Add category</button></div></section>`}
+const norm=u=>{try{u=u.trim().replace(/[)\].,;:!?'"]+$/,"");if(!/^https?:\/\//i.test(u))u="https://"+u;const x=new URL(u);if(!/\.[a-z]{2,}$/i.test(x.hostname))return null;x.hash="";return x.origin+(x.pathname==="/"?"":x.pathname.replace(/\/$/,""))+x.search}catch(e){return null}};
+const SUS=/bomb|spam|otp|hack|crack|stresser|ddos|keylog|phish|bypass|sms.?flood/i,SHORT=/^(bit\.ly|t\.co|tinyurl\.com|goo\.gl|is\.gd)$/;
+function guess(t){const m=[["ai",/\b(ai|gpt|llm|chat)\b/],["dev",/(github|code|dev|api|git)/],["design",/(design|image|photo|figma|canva)/],["conv",/(convert|pdf|compress)/],["cloud",/(drive|cloud|storage)/],["sec",/(vpn|privacy|secure|lookup)/],["edu",/(learn|course|edu)/],["social",/(instagram|tiktok|youtube|twitter)/],["comm",/(sms|mail|call|chat|message)/],["ent",/(movie|music|game|video)/]];for(const [c,r] of m)if(r.test(t))return c;return "other"}
+function extract(){const t=$("#tx").value,seen=new Set(),out=[];
+ (t.match(/(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s<>"']*)?/gi)||[]).forEach(raw=>{if(/^[\w.+-]+@/.test(raw)||/\.(png|jpg|jpeg|gif|js|css|py|txt|md)$/i.test(raw))return;const u=norm(raw);if(!u)return;const h=host(u),key=u.toLowerCase();if(seen.has(key))return;seen.add(key);
+ const dup=data.sites.find(s=>host(s.url)===h),fl=[];if(SUS.test(t.slice(Math.max(0,t.indexOf(raw)-80),t.indexOf(raw)+80))||SUS.test(h))fl.push("Context or name suggests abusive use");if(SHORT.test(h))fl.push("Link shortener hides the real destination");if(/xn--/.test(h))fl.push("Punycode domain, check for lookalikes");
+ const nm=h.split(".")[0];out.push({name:nm.charAt(0).toUpperCase()+nm.slice(1),url:u,cat:guess(h),desc:"",tags:[],dup:dup?dup.id:"",flags:fl,state:"pending"})});
+ P=out;$("#xmsg").textContent=out.length?`${out.length} unique site${out.length===1?"":"s"} found`:"No valid website addresses found. Check the pasted text.";prev()}
+function prev(){$("#prev").innerHTML=P.map((p,i)=>p.state==="rejected"?"":`<div class="card mt" data-i="${i}"><b>${esc(p.url)}</b>${p.dup?`<div class="warn">Already in the directory. Approving updates the existing entry.</div>`:""}${p.flags.map(f=>`<div class="warn bad">⚠ ${esc(f)}. Manual review needed.</div>`).join("")}
+<div class="rev"><input data-f="name" value="${esc(p.name)}" aria-label="Name"><input data-f="desc" value="${esc(p.desc)}" placeholder="Description (write it yourself, none is invented)" aria-label="Description"><select data-f="cat" aria-label="Category">${data.cats.map(c=>`<option value="${c.id}"${c.id===p.cat?" selected":""}>${esc(c.name)}</option>`).join("")}</select></div>
+<div class="row"><button class="btn p sm" data-act="ok" data-i="${i}">${p.dup?"Update entry":"Approve"}</button><button class="btn sm" data-act="no" data-i="${i}">Reject</button></div></div>`).join("")}
+function approve(i){const p=P[i];if(!p.name.trim()||!p.desc.trim()){toast("Add a name and a description first");return}
+ const flag=p.flags.join(". ");if(p.dup){const s=data.sites.find(x=>x.id===p.dup);Object.assign(s,{name:p.name,desc:p.desc,cat:p.cat});if(flag)s.flag=flag}
+ else data.sites.push({id:"u"+Date.now()+i,name:p.name.trim(),url:p.url,cat:p.cat,desc:p.desc.trim(),tags:[],added:new Date().toISOString().slice(0,10),featured:false,status:"active",flag});
+ p.state="rejected";save();toast("Saved");render()}
+/* lab */
+const HARM=/(otp|one.?time.?pass|sms.?bomb|call.?bomb|bulk (sms|call)|spam|flood|ddos|credential|steal|keylog|bypass (login|captcha|2fa)|scrape passwords|unauthori[sz]ed)/i;
+let LAB=null;
+function lab(){return `<h1>Automation Lab</h1><p class="mu" style="max-width:640px">Paste a tutorial or process description. Linkora extracts the steps and generates a Python project scaffold. It does not run any code, so nothing is tested or deployed here.</p>
+<textarea id="lt" class="mt" placeholder="1. Read a CSV of invoices&#10;2. Total the amounts per client&#10;3. Save a summary to report.csv"></textarea><div class="row mt"><button class="btn p" data-act="gen">Generate project</button></div><div id="labout"></div>`}
+function gen(){const t=$("#lt").value.trim();if(!t){$("#labout").innerHTML=`<div class="warn bad mt">Paste some instructions first.</div>`;return}
+ let lines=t.split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-*•])\s*/,"").trim()).filter(l=>l.length>3);if(lines.length<2)lines=t.split(/(?<=[.!?])\s+/).filter(l=>l.length>3);
+ const bad=lines.filter(l=>HARM.test(l)),ok=lines.filter(l=>!HARM.test(l));
+ let h="";if(bad.length)h+=`<div class="warn bad mt"><b>${bad.length} step${bad.length>1?"s":""} not automated.</b> They involve harassment, spam, credential or OTP abuse, or security bypass, which Linkora will not generate:<ul>${bad.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>Safe alternative: use the official API or consent-based flow of the service involved.</div>`;
+ if(!ok.length){$("#labout").innerHTML=h+`<div class="empty mt">No steps left to build.</div>`;return}
+ const fn=ok.map((s,i)=>`def step_${i+1}(ctx, dry_run):\n    """${s.replace(/"""/g,"'''").slice(0,90)}"""\n    log.info("Step ${i+1}: %s", step_${i+1}.__doc__)\n    if dry_run:\n        log.info("[dry-run] would perform step ${i+1}")\n        return ctx\n    raise NotImplementedError("Implement step ${i+1}")\n`).join("\n");
+ const files={"main.py":`"""Generated scaffold. Steps are stubs you must implement."""\nimport argparse, logging, os\n\nlog = logging.getLogger("project")\n\n${fn}\nSTEPS = [${ok.map((_,i)=>"step_"+(i+1)).join(", ")}]\n\n\ndef run(dry_run=True):\n    ctx = {"input": os.getenv("INPUT_PATH", "input.csv")}\n    for step in STEPS:\n        ctx = step(ctx, dry_run)\n    return ctx\n\n\nif __name__ == "__main__":\n    ap = argparse.ArgumentParser()\n    ap.add_argument("--execute", action="store_true", help="disable dry-run")\n    logging.basicConfig(level=logging.INFO)\n    run(dry_run=not ap.parse_args().execute)\n`,
+ "test_main.py":`import main\n\n\ndef test_dry_run_completes():\n    assert main.run(dry_run=True) is not None\n`,"requirements.txt":"pytest>=8.0\n",".env.example":"INPUT_PATH=input.csv\n# Add API keys here. Never commit a real .env file.\n",
+ "README.md":`# Project scaffold\n\nPython 3.10+. Generated from ${ok.length} step(s):\n\n${ok.map((s,i)=>`${i+1}. ${s}`).join("\n")}\n\n## Use\n\n    pip install -r requirements.txt\n    python main.py            # dry run\n    python main.py --execute  # real run (after implementing steps)\n    pytest\n\nStatus: generated only. Not executed or tested by Linkora.\n`};
+ LAB=files;const names=Object.keys(files);
+ $("#labout").innerHTML=h+`<section class="sec"><h2>Plan</h2><ol>${ok.map(s=>`<li>${esc(s)}</li>`).join("")}</ol><p class="mu">Inputs: INPUT_PATH (edit in .env). Add credentials and external services yourself where a step needs them.</p></section>
+ <h2>Files</h2><div class="tabs">${names.map((n,i)=>`<button class="chip${i?"":" on"}" data-act="file" data-n="${n}">${n}</button>`).join("")}</div><pre id="fv"></pre><div class="row"><button class="btn sm" data-act="copy">Copy file</button></div>`;showFile(names[0])}
+let CUR="";function showFile(n){CUR=n;$("#fv").textContent=LAB[n];document.querySelectorAll("[data-act=file]").forEach(b=>b.classList.toggle("on",b.dataset.n===n))}
+/* router */
+function render(){const r=(location.hash.replace(/^#\/?/,"")||"home").split("/")[0];const v={home,explore,categories,lab,manage,about}[r]||home;app.innerHTML=v();
+ document.querySelectorAll("[data-n]").forEach(a=>a.classList.toggle("on",a.dataset.n===(r==="home"?"home":r)));if(r==="explore")results();window.scrollTo(0,0)}
+document.addEventListener("input",e=>{const t=e.target;if(t.id==="hq"){F.q=t.value;if(t.value){location.hash="#/explore";setTimeout(()=>{const x=$("#eq");if(x){x.focus();x.setSelectionRange(99,99)}},0)}}
+ else if(t.id==="eq"){F.q=t.value;results()}else if(t.id==="es"){F.sort=t.value;results()}
+ else if(t.dataset.f){const i=+t.closest("[data-i]").dataset.i;P[i][t.dataset.f]=t.value}});
+document.addEventListener("change",e=>{const t=e.target;if(t.dataset&&t.dataset.f){const i=+t.closest("[data-i]").dataset.i;P[i][t.dataset.f]=t.value}
+ if(t.id==="imp"&&t.files[0]){const f=new FileReader();f.onload=()=>{try{const d=JSON.parse(f.result);if(!Array.isArray(d.sites)||!Array.isArray(d.cats))throw 0;const have=new Set(data.sites.map(s=>host(s.url)));let n=0;d.sites.forEach(s=>{if(s&&s.name&&norm(s.url||"")&&!have.has(host(s.url))){data.sites.push({id:"i"+Date.now()+n,name:String(s.name),url:norm(s.url),cat:s.cat||"other",desc:String(s.desc||""),tags:Array.isArray(s.tags)?s.tags.map(String):[],added:s.added||new Date().toISOString().slice(0,10),featured:!!s.featured,status:s.status==="archived"?"archived":"active",flag:s.flag||""});n++}});d.cats.forEach(c=>{if(c.id&&c.name&&!data.cats.some(x=>x.id===c.id))data.cats.push({id:String(c.id),name:String(c.name),icon:String(c.icon||"•")})});save();toast(`Imported ${n} new site(s). Existing entries kept.`);render()}catch(x){toast("Import failed: file is not valid Linkora JSON. Nothing was changed.")}};f.readAsText(t.files[0])}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act,id=b.dataset.id,s=data.sites.find(x=>x.id===id);
+ if(a==="cat"){F.cat=id;F.q="";location.hash="#/explore";if(location.hash==="#/explore")render()}
+ else if(a==="clear"){F={q:"",cat:"",sort:"new"};render()}
+ else if(a==="extract")extract();else if(a==="ok")approve(+b.dataset.i);else if(a==="no"){P[+b.dataset.i].state="rejected";prev()}
+ else if(a==="feat"){s.featured=!s.featured;save();render()}else if(a==="arch"){s.status=s.status==="active"?"archived":"active";save();render()}
+ else if(a==="del"){if(confirm("Delete "+s.name+"? This cannot be undone.")){data.sites=data.sites.filter(x=>x.id!==id);save();render()}}
+ else if(a==="addcat"){const n=$("#nc").value.trim();if(!n){toast("Enter a category name");return}const cid=n.toLowerCase().replace(/[^a-z0-9]+/g,"-");if(data.cats.some(c=>c.id===cid)){toast("That category already exists");return}data.cats.push({id:cid,name:n,icon:n[0].toUpperCase()});save();render()}
+ else if(a==="export"){const t=JSON.stringify(data,null,2);navigator.clipboard.writeText(t).then(()=>toast("JSON copied to clipboard"),()=>{$("#prev").innerHTML=`<textarea class="mt" readonly>${esc(t)}</textarea>`;toast("Copy the JSON below")})}
+ else if(a==="gen")gen();else if(a==="file")showFile(b.dataset.n);else if(a==="copy")navigator.clipboard.writeText(LAB[CUR]).then(()=>toast("Copied"),()=>toast("Select the text and copy manually"))});
+window.addEventListener("hashchange",render);load();render();
+</script></body></html>
