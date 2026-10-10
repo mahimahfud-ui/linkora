@@ -147,12 +147,13 @@ const CATS=[["ai","AI Tools","✦"],["dev","Developer Tools","</>"],["prod","Pro
 const SEED=[
 {id:"s1",name:"NowLookup",url:"https://nowlookup.com",cat:"sec",desc:"Initial entry, not yet reviewed. Appears related to phone-number or identity lookups; verify before use.",tags:["lookup","phone"],added:"2026-10-10",featured:false,status:"active",flag:"Involves phone-number information. Review its privacy practices before entering any personal data."},
 {id:"s2",name:"SMS24",url:"https://sms24.me",cat:"comm",desc:"Initial entry, not yet reviewed. Lists public SMS inboxes that anyone can read.",tags:["sms","public inbox"],added:"2026-10-10",featured:false,status:"active",flag:"Public SMS inboxes expose every message to all visitors. Never use them for accounts, passwords or anything private."},
-{id:"s3",name:"CallBomberz",url:"https://callbomberz.in",cat:"comm",desc:"Initial entry, not yet reviewed. Name suggests bulk calling or message flooding.",tags:["bulk calling"],added:"2026-10-10",featured:false,status:"active",flag:"Services that flood people with calls or texts can be harassment and may be illegal. Listed for awareness only, not endorsed."}];
+{id:"s3",name:"CallBomberz",url:"https://callbomberz.in",cat:"comm",desc:"Initial entry, not yet reviewed. Name suggests bulk calling or message flooding.",tags:["bulk calling"],added:"2026-10-10",featured:false,status:"active",flag:"Services that flood people with calls or texts can be harassment and may be illegal. Listed for awareness only, not endorsed."},
+{id:"s4",name:"PhotoText",url:"https://phototext.com",cat:"design",desc:"Website mentioned as a tool for editing text inside screenshots or images. Its current availability and exact capabilities have not been independently verified.",tags:["image editing","screenshot","text editing"],added:"2026-10-10",featured:false,status:"active",flag:"Edited screenshots can misrepresent evidence. Verify important claims against the original source and do not use edits to deceive or falsify records."}];
 const $=s=>document.querySelector(s),app=$("#app");
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let data,toastT;
 function load(){try{const r=localStorage.getItem("linkora.v1");data=r?JSON.parse(r):null}catch(e){data=null}
- if(!data||!Array.isArray(data.sites))data={sites:SEED.slice(),cats:CATS.map(c=>({id:c[0],name:c[1],icon:c[2]}))}}
+ if(!data||!Array.isArray(data.sites))data={sites:SEED.slice(),cats:CATS.map(c=>({id:c[0],name:c[1],icon:c[2]}))};else{let changed=false;for(const s of SEED){if(!data.sites.some(x=>x.url===s.url)){data.sites.push(s);changed=true}}if(changed)save()}}
 function save(){try{localStorage.setItem("linkora.v1",JSON.stringify(data))}catch(e){toast("Could not save in this browser")}}
 function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toastT);toastT=setTimeout(()=>t.style.display="none",2400)}
 const catName=id=>(data.cats.find(c=>c.id===id)||{name:"Other"}).name;
