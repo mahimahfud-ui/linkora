@@ -147,12 +147,13 @@ const CATS=[["ai","AI Tools","✦"],["dev","Developer Tools","</>"],["prod","Pro
 const SEED=[
 {id:"s1",name:"NowLookup",url:"https://nowlookup.com",cat:"sec",desc:"Initial entry, not yet reviewed. Appears related to phone-number or identity lookups; verify before use.",tags:["lookup","phone"],added:"2026-10-10",featured:false,status:"active",flag:"Involves phone-number information. Review its privacy practices before entering any personal data."},
 {id:"s2",name:"SMS24",url:"https://sms24.me",cat:"comm",desc:"Initial entry, not yet reviewed. Lists public SMS inboxes that anyone can read.",tags:["sms","public inbox"],added:"2026-10-10",featured:false,status:"active",flag:"Public SMS inboxes expose every message to all visitors. Never use them for accounts, passwords or anything private."},
-{id:"s3",name:"CallBomberz",url:"https://callbomberz.in",cat:"comm",desc:"Initial entry, not yet reviewed. Name suggests bulk calling or message flooding.",tags:["bulk calling"],added:"2026-10-10",featured:false,status:"active",flag:"Services that flood people with calls or texts can be harassment and may be illegal. Listed for awareness only, not endorsed."}];
+{id:"s3",name:"CallBomberz",url:"https://callbomberz.in",cat:"comm",desc:"Initial entry, not yet reviewed. Name suggests bulk calling or message flooding.",tags:["bulk calling"],added:"2026-10-10",featured:false,status:"active",flag:"Services that flood people with calls or texts can be harassment and may be illegal. Listed for awareness only, not endorsed."},
+{id:"s4",name:"PhotoText",url:"https://phototext.com",cat:"design",desc:"Website mentioned as a tool for editing text inside screenshots or images. Its current availability and exact capabilities have not been independently verified.",tags:["image editing","screenshot","text editing"],added:"2026-10-10",featured:false,status:"active",flag:"Edited screenshots can misrepresent evidence. Verify important claims against the original source and do not use edits to deceive or falsify records."}];
 const $=s=>document.querySelector(s),app=$("#app");
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let data,toastT;
 function load(){try{const r=localStorage.getItem("linkora.v1");data=r?JSON.parse(r):null}catch(e){data=null}
- if(!data||!Array.isArray(data.sites))data={sites:SEED.slice(),cats:CATS.map(c=>({id:c[0],name:c[1],icon:c[2]}))}}
+ if(!data||!Array.isArray(data.sites))data={sites:SEED.slice(),cats:CATS.map(c=>({id:c[0],name:c[1],icon:c[2]}))};else{let changed=false;for(const s of SEED){if(!data.sites.some(x=>x.url===s.url)){data.sites.push(s);changed=true}}if(changed)save()}}
 function save(){try{localStorage.setItem("linkora.v1",JSON.stringify(data))}catch(e){toast("Could not save in this browser")}}
 function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toastT);toastT=setTimeout(()=>t.style.display="none",2400)}
 const catName=id=>(data.cats.find(c=>c.id===id)||{name:"Other"}).name;
@@ -183,7 +184,7 @@ function explore(){return `<h1>Explore</h1><div class="row mt"><input id="eq" ty
 function results(){const r=filtered();$("#cnt").textContent=`${r.length} result${r.length===1?"":"s"}`;$("#res").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1">No tools match. Try another word or clear the filters.</div>`}
 function categories(){return `<h1>Categories</h1><div class="grid mt">${catCards()}</div>`}
 function about(){return `<h1>About Linkora</h1><p class="mu" style="max-width:640px">Linkora is a curated directory of online tools. Entries are added only after you approve them. Services involving public SMS inboxes, phone numbers or bulk messaging carry a visible caution, and nothing here is an endorsement.</p>
-<p class="mu" style="max-width:640px">This version runs entirely in your browser. Your changes are stored in this browser only, so they are not shared and can be lost if you clear site data. Export JSON from Manage to back them up.</p>`}
+<p class="mu" style="max-width:640px">This version runs entirely in your browser. Your changes are stored in this browser only, so they are not shared and can be lost if you clear site data. Export JSON from Manage to back them up. New sites must resolve to a public DNS address before approval or JSON import; DNS resolution does not guarantee that a site is trustworthy or that every page is available.</p>`}
 /* manage */
 let P=[];
 function manage(){const all=data.sites;return `<h1>Manage</h1><div class="warn mt">This page has no login. It edits only your own browser's copy. Shared, protected admin needs a backend with real authentication, which is not configured.</div>
@@ -192,20 +193,51 @@ function manage(){const all=data.sites;return `<h1>Manage</h1><div class="warn m
 <div class="tbl mt">${all.map(s=>`<div class="card" style="margin-bottom:8px"><div class="row"><b>${esc(s.name)}</b><span class="mu dom">${esc(s.url)}</span><span class="tag">${esc(s.status)}</span></div><div class="row"><button class="btn sm" data-act="feat" data-id="${s.id}">${s.featured?"Unfeature":"Feature"}</button><button class="btn sm" data-act="arch" data-id="${s.id}">${s.status==="active"?"Archive":"Restore"}</button><button class="btn sm d" data-act="del" data-id="${s.id}">Delete</button></div></div>`).join("")}</div></section>
 <section class="sec"><h2>Add a category</h2><div class="row"><input id="nc" style="flex:1;min-width:180px" placeholder="Category name" aria-label="Category name"><button class="btn" data-act="addcat">Add category</button></div></section>`}
 const norm=u=>{try{u=u.trim().replace(/[)\].,;:!?'"]+$/,"");if(!/^https?:\/\//i.test(u))u="https://"+u;const x=new URL(u);if(!/\.[a-z]{2,}$/i.test(x.hostname))return null;x.hash="";return x.origin+(x.pathname==="/"?"":x.pathname.replace(/\/$/,""))+x.search}catch(e){return null}};
+
+// Fail closed: new domains must resolve to a public web address before approval/import.
+async function verifyDomain(url){
+ try{
+  const parsed=new URL(url),h=parsed.hostname.toLowerCase();
+  if(!h||h==="localhost"||h.endsWith(".localhost")||h.endsWith(".local")||h.endsWith(".test")||h.endsWith(".invalid")||h.endsWith(".example")||h.includes(":"))return {ok:false,reason:"Not a public website domain"};
+  const answers=await Promise.all(["A","AAAA"].map(async type=>{
+   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),6500);
+   try{
+    const res=await fetch("https://dns.google/resolve?name="+encodeURIComponent(h)+"&type="+type,{headers:{accept:"application/dns-json"},cache:"no-store",signal:ctrl.signal});
+    if(!res.ok)return false;
+    const json=await res.json();
+    return json.Status===0&&Array.isArray(json.Answer)&&json.Answer.some(a=>Number(a.type)===1||Number(a.type)===28);
+   }catch(e){return false}finally{clearTimeout(timer)}
+  }));
+  return answers.some(Boolean)?{ok:true,reason:"Public DNS address found"}:{ok:false,reason:"No public A/AAAA address found"};
+ }catch(e){return {ok:false,reason:"DNS lookup failed or could not be reached"}}
+}
 const SUS=/bomb|spam|otp|hack|crack|stresser|ddos|keylog|phish|bypass|sms.?flood/i,SHORT=/^(bit\.ly|t\.co|tinyurl\.com|goo\.gl|is\.gd)$/;
 function guess(t){const m=[["ai",/\b(ai|gpt|llm|chat)\b/],["dev",/(github|code|dev|api|git)/],["design",/(design|image|photo|figma|canva)/],["conv",/(convert|pdf|compress)/],["cloud",/(drive|cloud|storage)/],["sec",/(vpn|privacy|secure|lookup)/],["edu",/(learn|course|edu)/],["social",/(instagram|tiktok|youtube|twitter)/],["comm",/(sms|mail|call|chat|message)/],["ent",/(movie|music|game|video)/]];for(const [c,r] of m)if(r.test(t))return c;return "other"}
-function extract(){const t=$("#tx").value,seen=new Set(),out=[];
- (t.match(/(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s<>"']*)?/gi)||[]).forEach(raw=>{if(/^[\w.+-]+@/.test(raw)||/\.(png|jpg|jpeg|gif|js|css|py|txt|md)$/i.test(raw))return;const u=norm(raw);if(!u)return;const h=host(u),key=u.toLowerCase();if(seen.has(key))return;seen.add(key);
+async function extract(){const t=$("#tx").value,seen=new Set(),out=[];
+ (t.match(/(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s<>"']*)?/gi)||[]).forEach(raw=>{if(/^[\w.+-]+@/.test(raw)||/\.(png|jpg|jpeg|gif|js|css|py|txt|md)$/i.test(raw))return;const u=norm(raw);if(!u)return;const h=host(u),key=h.toLowerCase();if(seen.has(key))return;seen.add(key);
  const dup=data.sites.find(s=>host(s.url)===h),fl=[];if(SUS.test(t.slice(Math.max(0,t.indexOf(raw)-80),t.indexOf(raw)+80))||SUS.test(h))fl.push("Context or name suggests abusive use");if(SHORT.test(h))fl.push("Link shortener hides the real destination");if(/xn--/.test(h))fl.push("Punycode domain, check for lookalikes");
- const nm=h.split(".")[0];out.push({name:nm.charAt(0).toUpperCase()+nm.slice(1),url:u,cat:guess(h),desc:"",tags:[],dup:dup?dup.id:"",flags:fl,state:"pending"})});
- P=out;$("#xmsg").textContent=out.length?`${out.length} unique site${out.length===1?"":"s"} found`:"No valid website addresses found. Check the pasted text.";prev()}
-function prev(){$("#prev").innerHTML=P.map((p,i)=>p.state==="rejected"?"":`<div class="card mt" data-i="${i}"><b>${esc(p.url)}</b>${p.dup?`<div class="warn">Already in the directory. Approving updates the existing entry.</div>`:""}${p.flags.map(f=>`<div class="warn bad">⚠ ${esc(f)}. Manual review needed.</div>`).join("")}
-<div class="rev"><input data-f="name" value="${esc(p.name)}" aria-label="Name"><input data-f="desc" value="${esc(p.desc)}" placeholder="Description (write it yourself, none is invented)" aria-label="Description"><select data-f="cat" aria-label="Category">${data.cats.map(c=>`<option value="${c.id}"${c.id===p.cat?" selected":""}>${esc(c.name)}</option>`).join("")}</select></div>
-<div class="row"><button class="btn p sm" data-act="ok" data-i="${i}">${p.dup?"Update entry":"Approve"}</button><button class="btn sm" data-act="no" data-i="${i}">Reject</button></div></div>`).join("")}
-function approve(i){const p=P[i];if(!p.name.trim()||!p.desc.trim()){toast("Add a name and a description first");return}
- const flag=p.flags.join(". ");if(p.dup){const s=data.sites.find(x=>x.id===p.dup);Object.assign(s,{name:p.name,desc:p.desc,cat:p.cat});if(flag)s.flag=flag}
+ const nm=h.split(".")[0];out.push({name:nm.charAt(0).toUpperCase()+nm.slice(1),url:u,cat:guess(h),desc:"",tags:[],dup:dup?dup.id:"",flags:fl,state:"pending",verifying:true,verified:false,verifyMessage:"Checking public DNS…"})});
+ P=out;$("#xmsg").textContent=out.length?(out.length+" unique domain"+(out.length===1?"":"s")+" found; verifying before approval…"):"No valid website addresses found. Check the pasted text.";prev();
+ const limited=out.slice(0,30);if(out.length>30)$("#xmsg").textContent="First 30 unique domains will be checked to avoid overload.";
+ await Promise.all(limited.map(async p=>{const result=SHORT.test(host(p.url))?{ok:false,reason:"Link shortener cannot be verified to the final destination"}:await verifyDomain(p.url);p.verified=result.ok;p.verifying=false;p.verifyMessage=result.reason;}));
+ out.slice(30).forEach(p=>{p.verifying=false;p.verified=false;p.verifyMessage="Not checked: only 30 domains are checked per paste";});
+ if($("#prev"))prev();
+ const verified=out.filter(p=>p.verified).length;
+ if($("#xmsg"))$("#xmsg").textContent=verified+" verified; "+(out.length-verified)+" unverified/rejected. Only DNS-verified domains can be approved.";
+}
+function prev(){if(!$("#prev"))return;$("#prev").innerHTML=P.map((p,i)=>{
+ if(p.state==="rejected")return "";
+ const verify=p.verifying?'<div class="warn">◌ Checking public DNS records…</div>':p.verified?'<div class="tag" style="display:inline-block;color:#c7ff4d">✓ Domain verified: '+esc(p.verifyMessage||"Public DNS address found")+'</div>':'<div class="warn bad">✕ Not verified: '+esc(p.verifyMessage||"domain could not be verified")+'. This site cannot be added.</div>';
+ const cats=data.cats.map(c=>'<option value="'+esc(c.id)+'"'+(c.id===p.cat?' selected':'')+'>'+esc(c.name)+'</option>').join("");
+ const enabled=p.verified&&!p.verifying;
+ return '<div class="card mt" data-i="'+i+'"><b>'+esc(p.url)+'</b>'+(p.dup?'<div class="warn">Already in the directory. Approving updates the existing entry.</div>':'')+verify+p.flags.map(f=>'<div class="warn bad">⚠ '+esc(f)+'. Manual review needed.</div>').join("")+
+ '<div class="rev"><input data-f="name" value="'+esc(p.name)+'" aria-label="Name"><input data-f="desc" value="'+esc(p.desc)+'" placeholder="Description (write it yourself, none is invented)" aria-label="Description"><select data-f="cat" aria-label="Category">'+cats+'</select></div>'+
+ '<div class="row"><button class="btn p sm" data-act="ok" data-i="'+i+'" '+(enabled?'':'disabled title="Verify the domain first"')+'>'+(p.dup?"Update entry":"Approve")+'</button><button class="btn sm" data-act="no" data-i="'+i+'">Reject</button></div></div>';
+}).join("")}
+function approve(i){const p=P[i];if(!p||p.verified!==true||p.verifying){toast("This domain is not verified. It cannot be added.");return}if(!p.name.trim()||!p.desc.trim()){toast("Add a name and a description first");return}
+ const flag=p.flags.join(". ");if(p.dup){const s=data.sites.find(x=>x.id===p.dup);if(!s){toast("Existing entry was not found");return}Object.assign(s,{name:p.name,desc:p.desc,cat:p.cat});if(flag)s.flag=flag}
  else data.sites.push({id:"u"+Date.now()+i,name:p.name.trim(),url:p.url,cat:p.cat,desc:p.desc.trim(),tags:[],added:new Date().toISOString().slice(0,10),featured:false,status:"active",flag});
- p.state="rejected";save();toast("Saved");render()}
+ p.state="rejected";save();toast("Saved — domain had a public DNS address");render()}
 /* lab */
 const HARM=/(otp|one.?time.?pass|sms.?bomb|call.?bomb|bulk (sms|call)|spam|flood|ddos|credential|steal|keylog|bypass (login|captcha|2fa)|scrape passwords|unauthori[sz]ed)/i;
 let LAB=null;
@@ -231,7 +263,13 @@ document.addEventListener("input",e=>{const t=e.target;if(t.id==="hq"){F.q=t.val
  else if(t.id==="eq"){F.q=t.value;results()}else if(t.id==="es"){F.sort=t.value;results()}
  else if(t.dataset.f){const i=+t.closest("[data-i]").dataset.i;P[i][t.dataset.f]=t.value}});
 document.addEventListener("change",e=>{const t=e.target;if(t.dataset&&t.dataset.f){const i=+t.closest("[data-i]").dataset.i;P[i][t.dataset.f]=t.value}
- if(t.id==="imp"&&t.files[0]){const f=new FileReader();f.onload=()=>{try{const d=JSON.parse(f.result);if(!Array.isArray(d.sites)||!Array.isArray(d.cats))throw 0;const have=new Set(data.sites.map(s=>host(s.url)));let n=0;d.sites.forEach(s=>{if(s&&s.name&&norm(s.url||"")&&!have.has(host(s.url))){data.sites.push({id:"i"+Date.now()+n,name:String(s.name),url:norm(s.url),cat:s.cat||"other",desc:String(s.desc||""),tags:Array.isArray(s.tags)?s.tags.map(String):[],added:s.added||new Date().toISOString().slice(0,10),featured:!!s.featured,status:s.status==="archived"?"archived":"active",flag:s.flag||""});n++}});d.cats.forEach(c=>{if(c.id&&c.name&&!data.cats.some(x=>x.id===c.id))data.cats.push({id:String(c.id),name:String(c.name),icon:String(c.icon||"•")})});save();toast(`Imported ${n} new site(s). Existing entries kept.`);render()}catch(x){toast("Import failed: file is not valid Linkora JSON. Nothing was changed.")}};f.readAsText(t.files[0])}});
+ if(t.id==="imp"&&t.files[0]){const f=new FileReader();f.onload=async()=>{try{const d=JSON.parse(f.result);if(!Array.isArray(d.sites)||!Array.isArray(d.cats))throw 0;
+ const have=new Set(data.sites.map(s=>host(s.url))),raw=[];let skipped=0;
+ d.sites.forEach(s=>{const u=s&&s.name?norm(String(s.url||"")):null;if(!u){skipped++;return}const h=host(u);if(have.has(h)){skipped++;return}have.add(h);raw.push({s,url:u})});
+ const checked=await Promise.all(raw.slice(0,30).map(async x=>({s:x.s,url:x.url,check:await verifyDomain(x.url)})));skipped+=raw.length-checked.length;let n=0;
+ checked.forEach(x=>{if(!x.check.ok){skipped++;return}const s=x.s;data.sites.push({id:"i"+Date.now()+n,name:String(s.name),url:x.url,cat:s.cat||"other",desc:String(s.desc||""),tags:Array.isArray(s.tags)?s.tags.map(String):[],added:s.added||new Date().toISOString().slice(0,10),featured:!!s.featured,status:s.status==="archived"?"archived":"active",flag:s.flag||""});n++});
+ d.cats.forEach(c=>{if(c.id&&c.name&&!data.cats.some(x=>x.id===c.id))data.cats.push({id:String(c.id),name:String(c.name),icon:String(c.icon||"•")})});
+ save();toast("Imported "+n+"; skipped "+skipped+" duplicate, unverified or unchecked site(s).");render()}catch(x){toast("Import failed: invalid Linkora JSON. No unchecked site was added.")}};f.readAsText(t.files[0])}});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act,id=b.dataset.id,s=data.sites.find(x=>x.id===id);
  if(a==="cat"){F.cat=id;F.q="";location.hash="#/explore";if(location.hash==="#/explore")render()}
  else if(a==="clear"){F={q:"",cat:"",sort:"new"};render()}
