@@ -25,7 +25,7 @@ def cleanup():
             pass
 
 def split_scenes(transcript):
-    blocks = [re.sub(r"\s+", " ", b).strip() for b in re.split(r"\n\\s*\n", transcript) if b.strip()]
+    blocks = [re.sub(r"\s+", " ", b).strip() for b in re.split(r"\n\s*\n", transcript) if b.strip()]
     scenes = []
     for block in blocks:
         # Split long paragraphs at sentence boundaries while keeping each narration segment manageable.
