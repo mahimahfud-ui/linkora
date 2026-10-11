@@ -25,11 +25,11 @@ def cleanup():
             pass
 
 def split_scenes(transcript):
-    blocks = [re.sub(r"\\s+", " ", b).strip() for b in re.split(r"\\n\\s*\\n", transcript) if b.strip()]
+    blocks = [re.sub(r"\s+", " ", b).strip() for b in re.split(r"\n\\s*\n", transcript) if b.strip()]
     scenes = []
     for block in blocks:
         # Split long paragraphs at sentence boundaries while keeping each narration segment manageable.
-        sentences = re.split(r"(?<=[.!?।])\\s+", block)
+        sentences = re.split(r"(?<=[.!?।])\s+", block)
         current = ""
         for sentence in sentences:
             if current and len(current) + len(sentence) > 550:
@@ -120,10 +120,10 @@ def generate():
             run(["ffmpeg","-y","-loop","1","-i",str(slide),"-i",str(audio),"-c:v","libx264","-preset","ultrafast","-tune","stillimage","-pix_fmt","yuv420p","-c:a","aac","-b:a","128k","-shortest","-movflags","+faststart",str(segment)])
             parts.append(segment)
         concat_file = job / "concat.txt"
-        concat_file.write_text("".join(f"file '{p.name}'\\n" for p in parts), encoding="utf-8")
+        concat_file.write_text("".join(f"file '{p.name}'\n" for p in parts), encoding="utf-8")
         video = job / "tutorial.mp4"
         run(["ffmpeg","-y","-f","concat","-safe","0","-i",str(concat_file),"-c","copy","-movflags","+faststart",str(video)])
-        (job / "meta.txt").write_text(title + "\\n" + str(len(scenes)), encoding="utf-8")
+        (job / "meta.txt").write_text(title + "\n" + str(len(scenes)), encoding="utf-8")
         return jsonify({"ok":True,"id":job_id,"title":title,"scenes":len(scenes),"video_url":f"/videos/{job_id}/tutorial.mp4","download_url":f"/videos/{job_id}/tutorial.mp4","note":"ভিডিও ১২ ঘণ্টা পর্যন্ত এই সার্ভিসে রাখা হবে; স্থায়ী archive/storage আলাদা করে configure করতে হবে।"})
     except Exception as e:
         shutil.rmtree(job, ignore_errors=True)
