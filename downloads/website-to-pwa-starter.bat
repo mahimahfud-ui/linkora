@@ -53,6 +53,9 @@ if exist "manifest.json" (
   >>"manifest.json" echo   "theme_color": "%THEME_COLOR%",
   >>"manifest.json" echo   "background_color": "%BG_COLOR%",
   >>"manifest.json" echo   "icons": [
+  >>"manifest.json" echo     {"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  >>"manifest.json" echo     {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  >>"manifest.json" echo     {"src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
   >>"manifest.json" echo     {"src": "/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
   >>"manifest.json" echo   ]
   >>"manifest.json" echo }
@@ -67,6 +70,11 @@ if exist "pwa-icon.svg" (
   >>"pwa-icon.svg" echo ^<path d="M140 112h232v52H192v72h156v52H192v112h-52z" fill="#C9F77A"/^>
   >>"pwa-icon.svg" echo ^</svg^>
 )
+
+echo [2b/5] Generating PNG app icons...
+if not exist "icons" mkdir "icons"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-Type -AssemblyName System.Drawing; $bg=[System.Drawing.ColorTranslator]::FromHtml('%BG_COLOR%'); $fg=[System.Drawing.Color]::FromArgb(201,247,122); foreach($s in @(192,512)){ $bmp=New-Object System.Drawing.Bitmap($s,$s); $g=[System.Drawing.Graphics]::FromImage($bmp); $g.SmoothingMode='AntiAlias'; $g.Clear($bg); $font=New-Object System.Drawing.Font('Segoe UI',$s*0.58,[System.Drawing.FontStyle]::Bold,[System.Drawing.GraphicsUnit]::Pixel); $brush=New-Object System.Drawing.SolidBrush($fg); $g.DrawString('W',$font,$brush,($s*0.08),($s*0.10)); $bmp.Save((Join-Path 'icons' ('icon-'+$s+'.png')),[System.Drawing.Imaging.ImageFormat]::Png); if($s -eq 512){ $bmp.Save((Join-Path 'icons' 'icon-maskable-512.png'),[System.Drawing.Imaging.ImageFormat]::Png) }; $brush.Dispose(); $font.Dispose(); $g.Dispose(); $bmp.Dispose() }"
+if errorlevel 1 echo [WARNING] PNG icon generation failed. You may need to add valid PNG icons manually.
 
 echo [3/5] Creating service-worker.js...
 if exist "service-worker.js" (
