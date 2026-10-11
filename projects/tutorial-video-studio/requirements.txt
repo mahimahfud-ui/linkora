@@ -3,3 +3,4 @@ flask-cors>=4.0,<6
 gTTS>=2.5,<3
 Pillow>=10,<13
 gunicorn>=22,<24
+imageio-ffmpeg>=0.5,<1
