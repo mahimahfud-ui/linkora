@@ -1,296 +1,90 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Linkora</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090c0b">
+<meta name="description" content="WinForge — carefully reviewed Windows automation scripts, built from your tutorial transcripts.">
+<title>WinForge — Windows Automation Studio</title>
 <style>
-:root{--bg:#121413;--s:#1b1e1c;--s2:#242825;--bd:#2f3431;--tx:#f4f6f2;--mu:#9aa39d;--ac:#b8f23a;--acx:#14180a;--wr:#f2b84b;--er:#ff7a6b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 400px at 80% -10%,#26311a55,transparent),var(--bg);color:var(--tx);font:16px/1.55 "Segoe UI",system-ui,sans-serif}
-a{color:inherit;text-decoration:none}h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.01em;margin:0}
-:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:#121413ee;border-bottom:1px solid var(--bd);backdrop-filter:blur(8px)}
-.nav{max-width:1100px;margin:auto;padding:12px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-.logo{font-family:Georgia,serif;font-size:22px;font-weight:700;display:flex;gap:8px;align-items:center}.logo i{width:22px;height:22px;border-radius:7px;background:var(--ac);display:inline-block}
-.nav nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}.nav nav a{padding:6px 12px;border-radius:8px;color:var(--mu)}.nav nav a.on,.nav nav a:hover{color:var(--tx);background:var(--s2)}
-main{max-width:1100px;margin:auto;padding:28px 20px 60px}
-.hero{padding:56px 0 36px;max-width:720px}.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.04}.hero p{color:var(--mu);font-size:18px;max-width:560px}
-input,select,textarea{width:100%;background:var(--s);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:11px 14px;font:inherit}
-textarea{min-height:170px;font-family:ui-monospace,Consolas,monospace;font-size:14px}
-.btn{display:inline-block;border:1px solid var(--bd);background:var(--s2);color:var(--tx);padding:9px 16px;border-radius:10px;cursor:pointer;font:inherit}.btn:hover{border-color:var(--ac)}
-.btn.p{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:600}.btn.sm{padding:5px 10px;font-size:13px}.btn.d{color:var(--er)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.mt{margin-top:18px}.mu{color:var(--mu)}.sec{margin-top:44px}.sec>h2{font-size:26px;margin-bottom:14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-.card{background:var(--s);border:1px solid var(--bd);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.card:hover{border-color:#4a5a30}.card h3{font-size:18px}.card p{margin:0;color:var(--mu);font-size:14px;flex:1}
-.logoT{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:700;color:var(--acx);flex:none}
-.top{display:flex;gap:12px;align-items:center}.dom{font-size:12px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tag{font-size:12px;border:1px solid var(--bd);border-radius:20px;padding:1px 9px;color:var(--mu)}
-.warn{border:1px solid #6b5420;background:#2a2312;color:var(--wr);border-radius:10px;padding:8px 10px;font-size:13px}
-.bad{border-color:#6b2e27;background:#2a1512;color:var(--er)}
-.cat{cursor:pointer;text-align:left;color:inherit;font:inherit}.cat b{font-size:22px;color:var(--ac)}
-.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--bd);background:none;color:var(--mu);border-radius:20px;padding:5px 13px;cursor:pointer;font:inherit}.chip.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
-.empty{border:1px dashed var(--bd);border-radius:14px;padding:36px;text-align:center;color:var(--mu)}
-.lab{background:linear-gradient(135deg,#222c14,var(--s));border:1px solid #3d4d22;border-radius:16px;padding:26px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 6px}pre{background:#0d0f0e;border:1px solid var(--bd);border-radius:10px;padding:14px;overflow-x:auto;font-size:13px;max-height:380px}
-.tbl{overflow-x:auto}.rev{display:grid;gap:10px;grid-template-columns:1fr 1fr 160px;margin:8px 0}
-footer{border-top:1px solid var(--bd);padding:26px 20px;text-align:center;color:var(--mu);font-size:14px}footer a{margin:0 10px}footer a:hover{color:var(--tx)}
-#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid var(--ac);padding:9px 16px;border-radius:10px;display:none;z-index:9}
-@media(max-width:640px){.rev{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
-
-/* Linkora visual refresh */
-:root{--bg:#0b0e0c;--s:#121713;--s2:#1a211b;--bd:#29352c;--tx:#f4f8f1;--mu:#9ca99f;--ac:#c7ff4d;--acx:#111807;--wr:#ffd166;--er:#ff8178}
-body{background:radial-gradient(ellipse at 12% 0%,#b8f23a13,transparent 34%),radial-gradient(ellipse at 92% 18%,#6dd5ed0c,transparent 28%),linear-gradient(180deg,#0b0e0c,#0d110e 50%,#0a0c0b);background-attachment:fixed}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.14;background-image:radial-gradient(#a9c58c 0.6px,transparent .6px);background-size:20px 20px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
-header{background:#0b0e0cce;border-bottom-color:#c7ff4d24;box-shadow:0 10px 35px #0002;backdrop-filter:blur(18px) saturate(145%)}
-.nav{max-width:1180px;padding-top:14px;padding-bottom:14px}
-.logo{font-size:24px;letter-spacing:-.7px}.logo i{box-shadow:0 0 24px #c7ff4d48;transform:rotate(-8deg);transition:transform .3s ease}.logo:hover i{transform:rotate(35deg) scale(1.08)}
-.nav nav a{transition:color .2s ease,background .2s ease,transform .2s ease}.nav nav a:hover{transform:translateY(-1px)}
-main{max-width:1180px;padding-top:30px}
-.hero{position:relative;isolation:isolate;max-width:none;padding:82px 0 58px;animation:rise-in .75s cubic-bezier(.2,.7,.2,1) both}
-.hero:after{content:"";position:absolute;z-index:-1;right:2%;top:15%;width:clamp(130px,22vw,260px);aspect-ratio:1;border:1px solid #c7ff4d22;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c7ff4d18,transparent 62%);box-shadow:inset 0 0 50px #c7ff4d08,0 0 80px #c7ff4d08;animation:orbit-glow 8s ease-in-out infinite alternate}
-.hero h1{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(46px,8vw,86px);font-weight:760;letter-spacing:-.065em;line-height:.99;max-width:780px;background:linear-gradient(110deg,#fff 5%,#e3f6d4 48%,#c7ff4d 105%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{font-size:clamp(16px,2vw,20px);line-height:1.75;max-width:590px;margin-top:22px}
-input,select,textarea{background:#111612d9;border-color:#334136;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
-input:focus,select:focus,textarea:focus{border-color:#c7ff4d99;box-shadow:0 0 0 4px #c7ff4d12;outline:none;background:#121a13}
-.btn{border-radius:12px;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}
-.btn:hover{transform:translateY(-2px);border-color:#c7ff4d88;box-shadow:0 8px 22px #0002}
-.btn.p{box-shadow:0 6px 24px #c7ff4d12}.btn.p:hover{background:#d6ff78;box-shadow:0 8px 28px #c7ff4d20}
-.sec{margin-top:54px}.sec>h2{font-family:ui-sans-serif,system-ui,sans-serif;font-size:clamp(23px,3vw,30px);letter-spacing:-.04em}
-.grid{gap:16px}
-.card{position:relative;overflow:hidden;background:linear-gradient(145deg,#151b16ed,#101411ed);border-color:#2b382d;border-radius:18px;padding:19px;box-shadow:0 8px 28px #00013;animation:rise-in .55s both;transition:transform .28s cubic-bezier(.2,.7,.2,1),border-color .28s ease,box-shadow .28s ease,background .28s ease}
-.card:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#c7ff4d45,transparent);opacity:.7}
-.card:hover{transform:translateY(-5px);border-color:#a8d94b72;box-shadow:0 18px 42px #0003,0 0 0 1px #c7ff4d0b;background:linear-gradient(145deg,#19221a,#111612)}
-.grid>.card:nth-child(3n+2){animation-delay:70ms}.grid>.card:nth-child(3n){animation-delay:130ms}
-.card h3{font-family:ui-sans-serif,system-ui,sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em}
-.card p{line-height:1.65}
-.logoT{width:48px;height:48px;border-radius:15px;background:#20291e!important;border:1px solid #ffffff12;box-shadow:inset 0 1px #ffffff0c;overflow:hidden}
-.logoT img{width:100%;height:100%;object-fit:contain;padding:8px;display:block}
-.tag{border-color:#ffffff14;background:#ffffff04;padding:3px 10px}
-.chip{transition:all .2s ease}.chip:hover{color:var(--tx);border-color:#c7ff4d70}.chip.on{box-shadow:0 4px 18px #c7ff4d13}
-.empty{background:#ffffff03;border-color:#43513f}
-.lab{background:radial-gradient(ellipse at 100% 0%,#c7ff4d14,transparent 50%),linear-gradient(135deg,#182116,#111612);border-color:#526b32;border-radius:20px;box-shadow:0 16px 48px #0002}
-.lab h2{font-family:ui-sans-serif,system-ui,sans-serif}
-footer{border-top-color:#c7ff4d20;background:#0b0e0c55}
-#toast{box-shadow:0 12px 40px #0006;backdrop-filter:blur(12px)}
-@keyframes rise-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes orbit-glow{from{transform:translate3d(0,0,0) scale(.96);opacity:.65}to{transform:translate3d(-12px,10px,0) scale(1.04);opacity:1}}
-@media(max-width:640px){.hero{padding:58px 0 36px}.hero:after{right:0;top:8%;opacity:.6}.hero h1{font-size:clamp(42px,12vw,64px)}.nav{gap:10px}.nav nav{order:3;flex-basis:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px}.nav nav a{white-space:nowrap}.grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,235px),1fr))}.card{padding:16px}}
+:root{color-scheme:dark;--bg:#080b0a;--panel:#111714;--panel2:#151e18;--line:#2a382d;--text:#f3f8f1;--muted:#9aa99c;--lime:#c5ff55;--cyan:#73f5dc;--orange:#ffbd66}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 "Segoe UI",Inter,system-ui,sans-serif;overflow-x:hidden}a{color:inherit;text-decoration:none}button,input{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+#ambient{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:radial-gradient(ellipse at 50% -10%,#c5ff5510,transparent 45%),linear-gradient(180deg,#080b0a,#0b100d 55%,#080b0a)}
+#ambient:before{content:"";position:absolute;inset:-50%;opacity:.22;background-image:linear-gradient(#c5ff550a 1px,transparent 1px),linear-gradient(90deg,#c5ff550a 1px,transparent 1px);background-size:54px 54px;transform:perspective(650px) rotateX(58deg) scale(1.8);transform-origin:top center;mask-image:linear-gradient(#000,transparent 70%);animation:gridmove 35s linear infinite}
+#ambient:after{content:"";position:absolute;width:65vw;height:65vw;max-width:780px;max-height:780px;min-width:300px;min-height:300px;left:50%;top:-24vw;transform:translateX(-50%);border:1px solid #c5ff5517;border-radius:50%;box-shadow:0 0 100px #c5ff5508,inset 0 0 90px #c5ff5507;animation:orb 12s ease-in-out infinite alternate}
+@keyframes gridmove{to{background-position:0 540px,540px 0}}@keyframes orb{from{transform:translateX(-50%) scale(.96);opacity:.55}to{transform:translateX(-50%) scale(1.04);opacity:1}}@keyframes appear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+header{position:sticky;top:0;z-index:10;border-bottom:1px solid #c5ff551c;background:#080b0adf;backdrop-filter:blur(18px)}.nav{max-width:1160px;margin:auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:11px;font-size:19px;font-weight:800;letter-spacing:-.5px}.brand-icon{width:36px;height:36px;border-radius:12px;background:linear-gradient(145deg,#d6ff81,#8acb31);color:#15210b;display:grid;place-items:center;box-shadow:0 0 25px #c5ff5524}.brand-icon svg{width:22px;height:22px}.brand small{display:block;font-size:9px;letter-spacing:2px;color:var(--muted);font-weight:650;margin-top:-4px}.nav-right{display:flex;gap:8px;align-items:center}.nav-link{padding:8px 12px;color:var(--muted);border-radius:9px;font-size:13px}.nav-link:hover{background:#ffffff08;color:var(--text)}.status{font-size:11px;color:var(--lime);border:1px solid #c5ff5535;padding:5px 9px;border-radius:99px;white-space:nowrap}.status i{display:inline-block;width:6px;height:6px;background:var(--lime);border-radius:50%;margin-right:6px;box-shadow:0 0 9px var(--lime)}
+main{max-width:1160px;margin:auto;padding:0 22px 80px}.hero{min-height:465px;padding:86px 0 54px;display:flex;align-items:center;flex-direction:column;text-align:center;position:relative;animation:appear .8s ease both}.eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--lime);display:inline-flex;gap:9px;align-items:center;border:1px solid #c5ff5528;background:#c5ff5508;padding:7px 12px;border-radius:99px}.eyebrow span{width:6px;height:6px;background:var(--lime);border-radius:50%;box-shadow:0 0 10px var(--lime)}
+h1,h2,h3,p{margin-top:0}.hero h1{font-size:clamp(43px,8vw,82px);letter-spacing:-.075em;line-height:.99;max-width:870px;margin:24px 0 20px;font-weight:820;text-wrap:balance}.shine{background:linear-gradient(110deg,#fff 8%,#d9f7bd 48%,#c5ff55 85%);color:transparent;background-clip:text;-webkit-background-clip:text}.hero p{max-width:625px;color:var(--muted);font-size:17px;line-height:1.8;margin-bottom:24px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid var(--line);background:#151c17;color:var(--text);border-radius:11px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}.btn:hover{transform:translateY(-2px);border-color:#c5ff5577}.btn.primary{background:var(--lime);border-color:var(--lime);color:#17210d;box-shadow:0 7px 26px #c5ff5518}.btn.primary:hover{background:#d5ff8c}.btn svg{width:16px;height:16px}.hero-meta{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;color:#7f9082;font-size:11px;margin-top:28px}.hero-meta span{display:flex;align-items:center;gap:7px}.hero-meta b{color:#c5d5c7;font-weight:600}
+.section{margin-top:46px;animation:appear .65s ease both}.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px}.section-head h2{font-size:25px;letter-spacing:-.045em;margin:0}.section-head p{font-size:13px;color:var(--muted);margin:5px 0 0}.count{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:5px 10px;border-radius:99px;white-space:nowrap}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0}.searchbox{position:relative;flex:1;min-width:210px}.searchbox svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:17px;color:#718274}.searchbox input{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 14px 12px 40px;background:#111713;color:var(--text);font-size:13px}.filters{display:flex;gap:7px;flex-wrap:wrap}.filter{border:1px solid var(--line);border-radius:99px;padding:7px 12px;background:#111713;color:var(--muted);font-size:11px;cursor:pointer}.filter.active,.filter:hover{background:#c5ff5510;border-color:#c5ff5559;color:var(--lime)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.script-card{position:relative;min-width:0;border:1px solid #2a382d;background:linear-gradient(145deg,#121914f5,#0e130ff5);border-radius:17px;padding:19px;display:flex;flex-direction:column;gap:13px;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s;animation:appear .5s ease both}.script-card:before{content:"";height:1px;position:absolute;top:0;left:15%;right:15%;background:linear-gradient(90deg,transparent,#c5ff5559,transparent)}.script-card:hover{transform:translateY(-4px);border-color:#c5ff5555;box-shadow:0 16px 40px #0003}.card-top{display:flex;gap:12px;align-items:center}.task-icon{width:52px;height:52px;flex:none;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#253823,#152119);border:1px solid #c5ff5528;color:var(--lime)}.task-icon svg{width:27px;height:27px}.card-title{font-size:16px;font-weight:750;letter-spacing:-.3px;margin:0 0 3px;line-height:1.35}.subcat{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--lime)}.desc{font-size:13px;color:var(--muted);line-height:1.7;margin:0;flex:1}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:10px;border:1px solid #ffffff12;color:#9aa99c;border-radius:6px;padding:3px 7px}.fileline{display:flex;align-items:center;gap:8px;border:1px solid #ffffff0c;background:#080b09a8;border-radius:9px;padding:9px 10px;color:#a7b8a9;font-size:11px}.fileline svg{width:16px;height:16px;color:var(--lime);flex:none}.fileline span{overflow-wrap:anywhere}.download{width:100%;margin-top:2px}.download[aria-disabled=true]{opacity:.45;pointer-events:none}
+.empty{border:1px dashed #39483c;border-radius:18px;padding:44px 24px;text-align:center;background:linear-gradient(145deg,#111713a8,#0b100da8)}.empty-icon{width:58px;height:58px;margin:0 auto 16px;border:1px solid #c5ff5538;border-radius:18px;display:grid;place-items:center;background:#c5ff5509;color:var(--lime)}.empty-icon svg{width:28px;height:28px}.empty h3{font-size:19px;margin-bottom:8px}.empty p{max-width:490px;margin:0 auto;color:var(--muted);font-size:13px;line-height:1.8}
+.workflow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{border:1px solid var(--line);border-radius:15px;padding:19px;background:#101612a8}.step-number{font-size:10px;letter-spacing:2px;color:var(--lime)}.step h3{font-size:15px;margin:10px 0 7px}.step p{font-size:12px;color:var(--muted);margin:0;line-height:1.8}.step-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#c5ff550b;border:1px solid #c5ff5525;color:var(--lime);margin-top:15px}.step-icon svg{width:19px;height:19px}
+.note{border:1px solid #344433;background:#101811c9;border-radius:14px;padding:15px 17px;display:flex;gap:12px;align-items:flex-start}.note svg{width:19px;height:19px;color:var(--lime);flex:none;margin-top:2px}.note p{font-size:12px;color:var(--muted);margin:0;line-height:1.8}.note strong{color:#e8f5e8}
+footer{border-top:1px solid #c5ff5519;padding:25px 22px 32px;text-align:center;color:#718073;font-size:11px}footer b{color:#c3d2c5}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:50;background:#1b281c;border:1px solid #c5ff5555;color:var(--text);border-radius:12px;padding:10px 16px;font-size:12px;opacity:0;pointer-events:none;transition:all .2s;box-shadow:0 12px 35px #0008}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{min-height:430px}.workflow{grid-template-columns:1fr 1fr}.workflow .step:last-child{grid-column:1/-1}}
+@media(max-width:600px){.nav{padding:11px 15px}.nav-right .nav-link{display:none}.status{font-size:10px;padding:5px 8px}main{padding:0 15px 55px}.hero{min-height:auto;padding:68px 0 36px}.hero h1{font-size:clamp(42px,12vw,62px)}.hero p{font-size:15px}.hero-meta{gap:10px 15px}.section{margin-top:38px}.section-head h2{font-size:22px}.grid{grid-template-columns:1fr}.script-card{padding:17px}.workflow{grid-template-columns:1fr}.workflow .step:last-child{grid-column:auto}.empty{padding:34px 17px}.tools{align-items:stretch}.filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.filter{white-space:nowrap}.section-head{align-items:center}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
-
-
-/* Linkora dark-centred animated atmosphere */
-body{isolation:isolate;overflow-x:hidden;background:#070908;background-image:radial-gradient(ellipse at 50% -15%,#c7ff4d0d,transparent 45%),linear-gradient(180deg,#080a09 0%,#0b100c 48%,#080a09 100%);background-attachment:fixed}
-body:before{z-index:0;opacity:.12;background-image:radial-gradient(#c7ff4d 0.7px,transparent 0.9px),radial-gradient(#d5e8d0 0.5px,transparent 0.8px);background-size:44px 44px,83px 83px;background-position:0 0,17px 25px;animation:linkora-star-drift 85s linear infinite;mask-image:linear-gradient(to bottom,#000 0%,#000 45%,transparent 100%)}
-body:after{content:"";position:fixed;z-index:0;inset:-24%;pointer-events:none;opacity:.62;filter:blur(36px);transform:translate3d(0,0,0);background:radial-gradient(ellipse at 22% 28%,#baff3b13 0%,transparent 29%),radial-gradient(ellipse at 76% 34%,#48735b22 0%,transparent 32%),radial-gradient(ellipse at 53% 75%,#8ebc4510 0%,transparent 33%);background-size:140% 140%;animation:linkora-aurora 26s ease-in-out infinite alternate}
-header,main,footer{position:relative;z-index:1}
-header{background:#080b09d9;border-bottom-color:#c7ff4d24}
-.nav{justify-content:center;text-align:center;gap:12px 18px}
-.logo{flex:1 0 100%;justify-content:center;font-size:26px;letter-spacing:-.8px}
-.nav nav{flex:1 0 100%;justify-content:center;order:0}
-.nav nav a{font-size:14px}
-.nav #sbtn{margin-inline:auto}
-main{padding-top:24px}
-h1,h2,h3{text-align:center}
-.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:76px 0 54px}
-.hero h1{width:100%;max-width:920px;margin-inline:auto;text-align:center;font-size:clamp(48px,8.3vw,88px);letter-spacing:-.07em;line-height:.98;text-wrap:balance}
-.hero p{margin:22px auto 0;max-width:620px;text-align:center;text-wrap:pretty}
-.hero:after{right:auto;left:50%;top:3%;transform:translateX(-50%);width:clamp(190px,31vw,320px);opacity:.58;background:radial-gradient(circle at 50% 50%,#c7ff4d12,transparent 67%);box-shadow:inset 0 0 75px #c7ff4d08,0 0 120px #c7ff4d08;animation:linkora-centre-orbit 12s ease-in-out infinite alternate}
-.hero>*{position:relative;z-index:1}
-.hero #hq{display:block;max-width:680px;margin-inline:auto;text-align:left}
-.hero .row{justify-content:center}
-.sec{margin-top:58px}
-.sec>h2{margin:0 auto 20px;text-align:center;font-size:clamp(24px,3.2vw,32px);text-wrap:balance}
-.grid{gap:18px}
-.card{background:linear-gradient(145deg,#111612ee,#0c100ded);border-color:#253026cc;backdrop-filter:blur(9px)}
-.card .top{flex-direction:column;justify-content:center;text-align:center;gap:10px}
-.card .top>div:last-child{text-align:center;max-width:100%}
-.card h3{text-align:center;text-wrap:balance}
-.card p{text-align:center}
-.card .chips{justify-content:center}
-.card>.btn{align-self:center}
-.logoT{width:52px;height:52px;border-radius:16px;background:#121a12!important;border-color:#c7ff4d20}
-.lab{text-align:center;background:radial-gradient(ellipse at 50% 0%,#c7ff4d12,transparent 62%),linear-gradient(145deg,#111810f0,#0c100dec);border-color:#394a2c}
-.lab>p{max-width:700px;margin-inline:auto}
-footer{background:#07090899;text-align:center}
-footer>div:first-child{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:650;letter-spacing:.01em}
-.empty{text-align:center;background:#ffffff02}
-#toast{z-index:9}
-@keyframes linkora-aurora{0%{transform:translate3d(-2%,1%,0) scale(1);background-position:0% 50%}50%{transform:translate3d(2%,-1%,0) scale(1.045);background-position:80% 20%}100%{transform:translate3d(-1%,2%,0) scale(1.02);background-position:25% 90%}}
-@keyframes linkora-star-drift{from{background-position:0 0,17px 25px}to{background-position:440px 660px,-315px 415px}}
-@keyframes linkora-centre-orbit{from{transform:translateX(-50%) scale(.96);opacity:.34}to{transform:translateX(-50%) scale(1.07);opacity:.72}}
-@media(max-width:640px){
- .nav{padding:12px 14px;gap:10px}
- .logo{font-size:24px}
- .nav nav{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;max-width:100%;padding:0 0 5px}
- .nav nav a{white-space:nowrap;padding:6px 10px}
- .hero{padding:56px 0 36px}
- .hero h1{font-size:clamp(42px,11.7vw,64px)}
- .hero:after{top:3%;width:220px}
- .sec{margin-top:44px}
- .grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,235px),1fr))}
- .card{padding:17px}
- .lab{padding:22px 17px}
-}
-@media(prefers-reduced-motion:reduce){
- body:before,body:after,.hero:after{animation:none!important}
-}
-
-</style></head><body>
-<header><div class="nav"><a class="logo" href="#/"><i></i>Linkora</a>
-<nav aria-label="Main"><a href="#/" data-n="home">Home</a><a href="#/explore" data-n="explore">Explore</a><a href="#/categories" data-n="categories">Categories</a><a href="#/lab" data-n="lab">Automation Lab</a><a href="#/manage" data-n="manage">Manage</a><a href="#/about" data-n="about">About</a></nav>
-<a class="btn sm" href="#/explore" id="sbtn">Search</a></div></header>
-<main id="app"></main>
-<footer><div>Linkora · Discover useful tools. Build smarter workflows.</div><div class="mt"><a href="#/">Home</a><a href="#/explore">Explore</a><a href="#/categories">Categories</a><a href="#/lab">Automation Lab</a><a href="#/about">About</a></div></footer>
-<div id="toast" role="status"></div>
+</style>
+</head>
+<body>
+<div id="ambient" aria-hidden="true"></div>
+<header><div class="nav">
+<a class="brand" href="#" aria-label="WinForge home"><span class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-13h-7l1-7z"/></svg></span><span>WINFORGE<small>WINDOWS AUTOMATION STUDIO</small></span></a>
+<div class="nav-right"><a class="nav-link" href="#scripts">Script library</a><a class="nav-link" href="#workflow">How it works</a><span class="status"><i></i>TRANSCRIPT-DRIVEN</span></div>
+</div></header>
+<main>
+<section class="hero">
+<div class="eyebrow"><span></span> WINDOWS TASKS · BUILT WITH CARE</div>
+<h1>Less clicking.<br><span class="shine">More getting done.</span></h1>
+<p>Send me an Instagram Reel transcript. I’ll analyse the steps, build a practical Windows <b>.BAT</b> automation, review its safety, and publish a ready-to-download file here.</p>
+<div class="hero-actions"><a class="btn primary" href="#scripts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"/></svg> Browse BAT files</a><a class="btn" href="#workflow">See the workflow <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div>
+<div class="hero-meta"><span>⌘ <b>One-click downloads</b></span><span>◈ <b>Task-specific icons</b></span><span>✓ <b>Safety reviewed</b></span></div>
+</section>
+<section class="section" id="scripts">
+<div class="section-head"><div><h2>Automation library</h2><p>Each card gets its own task icon, details and direct .BAT download.</p></div><span class="count" id="count">0 scripts</span></div>
+<div class="tools"><label class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Search automations…" aria-label="Search BAT files"></label><div class="filters" id="filters"><button class="filter active" data-cat="all">All tasks</button><button class="filter" data-cat="system">System</button><button class="filter" data-cat="network">Network</button><button class="filter" data-cat="files">Files & folders</button><button class="filter" data-cat="productivity">Productivity</button></div></div>
+<div class="grid" id="scriptGrid"></div>
+</section>
+<section class="section" id="workflow">
+<div class="section-head"><div><h2>From Reel to ready-to-run</h2><p>Every transcript becomes a proper Windows task plan, not a blind copy-paste.</p></div></div>
+<div class="workflow">
+<div class="step"><span class="step-number">STEP 01 / OBSERVE</span><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Understand the transcript</h3><p>Identify the actual goal, commands, dependencies, Windows version assumptions and any steps the Reel leaves out.</p></div>
+<div class="step"><span class="step-number">STEP 02 / BUILD</span><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m8 6-6 6 6 6M16 6l6 6-6 6M14 3l-4 18"/></svg></div><h3>Write a complete .BAT</h3><p>Use clear status messages, quoted paths, checks and error handling. Avoid risky registry or security changes unless genuinely required.</p></div>
+<div class="step"><span class="step-number">STEP 03 / DOWNLOAD</span><div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"/></svg></div><h3>Get the ready-made file</h3><p>The finished script is added to this library with a task-matched icon, a clear description and its own download button.</p></div>
+</div>
+</section>
+<section class="section"><div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.9 18.4A1.8 1.8 0 0 0 3.5 21h17a1.8 1.8 0 0 0 1.6-2.6L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><p><strong>Before running any .BAT file:</strong> read its purpose and review the commands. Scripts that delete files, change network settings, modify the registry or require administrator rights will be clearly labelled and designed with safeguards where possible. Never run a script from an unknown source without inspecting it.</p></div></section>
+</main>
+<footer><b>WINFORGE</b> · Windows Automation Studio <span style="margin:0 8px;color:#354136">/</span> Built from real task descriptions, one script at a time.</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
-const CATS=[["ai","AI Tools","✦"],["dev","Developer Tools","</>"],["prod","Productivity","✓"],["design","Design & Creative","◐"],["edu","Education","◉"],["conv","File Conversion","⇄"],["cloud","Cloud & Storage","☁"],["social","Social Media Tools","@"],["sec","Privacy & Security","◈"],["comm","Communication","✉"],["ent","Entertainment","▶"],["other","Other","•"]];
-const SEED=[
-{id:"s1",name:"NowLookup",url:"https://nowlookup.com",cat:"sec",desc:"Initial entry, not yet reviewed. Appears related to phone-number or identity lookups; verify before use.",tags:["lookup","phone"],added:"2026-10-10",featured:false,status:"active",flag:"Involves phone-number information. Review its privacy practices before entering any personal data."},
-{id:"s2",name:"SMS24",url:"https://sms24.me",cat:"comm",desc:"Initial entry, not yet reviewed. Lists public SMS inboxes that anyone can read.",tags:["sms","public inbox"],added:"2026-10-10",featured:false,status:"active",flag:"Public SMS inboxes expose every message to all visitors. Never use them for accounts, passwords or anything private."},
-{id:"s3",name:"CallBomberz",url:"https://callbomberz.in",cat:"comm",desc:"Initial entry, not yet reviewed. Name suggests bulk calling or message flooding.",tags:["bulk calling"],added:"2026-10-10",featured:false,status:"active",flag:"Services that flood people with calls or texts can be harassment and may be illegal. Listed for awareness only, not endorsed."},
-{id:"s4",name:"PhotoText",url:"https://phototext.com",cat:"design",desc:"Website mentioned as a tool for editing text inside screenshots or images. Its current availability and exact capabilities have not been independently verified.",tags:["image editing","screenshot","text editing"],added:"2026-10-10",featured:false,status:"active",flag:"Edited screenshots can misrepresent evidence. Verify important claims against the original source and do not use edits to deceive or falsify records."},
-{id:"s5",name:"llamafile — Official",url:"https://github.com/mozilla-ai/llamafile",cat:"ai",desc:"Mozilla.ai's official project for running open-weight language models locally. Includes Windows guidance, documentation and release downloads.",tags:["offline AI","local LLM","GGUF"],added:"2026-10-10",featured:true,status:"active",flag:""},
-{id:"s6",name:"USB Offline AI Starter Kit",url:"https://github.com/mahimahfud-ui/linkora/tree/main/projects/usb-offline-ai",cat:"ai",desc:"Python helper that checks a llamafile Windows executable and GGUF model, copies them into a USB folder and creates a local-only Start.bat launcher. After setup, Python is not needed to launch the AI.",tags:["USB","portable AI","Windows","GGUF"],added:"2026-10-10",featured:false,status:"active",flag:"Use trusted downloads for the runtime and model. DNS or file-signature checks alone do not establish that a file or website is safe."},
-{id:"s7",name:"Windows Account Recovery Assistant",url:"https://github.com/mahimahfud-ui/linkora/tree/main/projects/windows-account-recovery-assistant",cat:"dev",desc:"A read-only Python helper that guides users through official Microsoft/local/work account recovery options and can display BitLocker status. It does not bypass passwords or change system files.",tags:["Python","Windows 11","password recovery","BitLocker"],added:"2026-10-10",featured:false,status:"active",flag:"This tool cannot reset passwords or bypass encryption. Use official recovery methods and locate your BitLocker recovery key before attempting Windows recovery options."},
-{"id":"s8","name":"9Drive","url":"https://github.com/zenhosta/9drive","cat":"cloud","desc":"Open-source, self-hosted dashboard project for managing connected Google Drive accounts. Review the upstream setup instructions, requested OAuth scopes and deployment configuration before use.","tags":["Google Drive","self-hosted","Docker","cloud storage"],"added":"2026-10-10","featured":false,"status":"active","flag":"The Google Drive full-access scope is broad. Test with a non-sensitive account, keep OAuth secrets private, and do not expose a local test deployment publicly."},
-{"id":"s9","name":"Docker Desktop","url":"https://www.docker.com/products/docker-desktop/","cat":"dev","desc":"Official Docker Desktop download page for running Docker containers on Windows.","tags":["Docker","Windows","containers"],"added":"2026-10-10","featured":false,"status":"active","flag":"Use the official installer and review Docker Desktop system requirements and licensing."},
-{"id":"s10","name":"Git for Windows","url":"https://git-scm.com/downloads/win","cat":"dev","desc":"Official Git download page for Windows, useful for cloning and updating source repositories.","tags":["Git","Windows","source control"],"added":"2026-10-10","featured":false,"status":"active","flag":"Review commands and repository contents before running downloaded code."},
-{"id":"s11","name":"Google Cloud Console","url":"https://console.cloud.google.com/","cat":"cloud","desc":"Google's console for creating a project and configuring APIs, OAuth consent, and credentials.","tags":["Google Cloud","OAuth","API"],"added":"2026-10-10","featured":false,"status":"active","flag":"Never publish OAuth client secrets. Review project permissions and OAuth audience settings."},
-{"id":"s12","name":"Google Drive API","url":"https://console.cloud.google.com/apis/library/drive.googleapis.com","cat":"cloud","desc":"Official Google Cloud API Library page for enabling the Google Drive API in a project.","tags":["Google Drive API","Google Cloud","API"],"added":"2026-10-10","featured":false,"status":"active","flag":"Enable APIs only in the intended project and request the minimum scopes needed."},
-{"id":"s13","name":"Google OAuth App Branding","url":"https://console.cloud.google.com/auth/branding","cat":"sec","desc":"Google Cloud's OAuth branding settings page for configuring an app name and contact details.","tags":["Google OAuth","consent screen","security"],"added":"2026-10-10","featured":false,"status":"active","flag":"Only connect accounts to applications you trust and understand. Testing mode and verification requirements can change."},
-{"id":"s14","name":"Website to Play Store Tutorial","url":"https://linkora-r5hm.onrender.com/projects/pwa-play-store-tutorial/","cat":"edu","desc":"A Bengali step-by-step interactive tutorial with browser narration, captions, PWA manifest and service-worker examples, PWABuilder packaging guidance, and Google Play Console publishing checklist.","tags":["PWA","PWABuilder","Android","Google Play Store","Bengali tutorial"],"added":"2026-10-11","featured":true,"status":"active","flag":"This is a browser-playable tutorial with synthesized narration, not a downloadable MP4 file. Browser voice support varies. Play Store approval is not guaranteed; follow current official policies."}
-,{id:"s15",name:"Bangla Tutorial Video Studio",url:"https://linkora-r5hm.onrender.com/projects/tutorial-video-studio/",cat:"edu",desc:"Paste a transcript and generate a Bengali-narrated MP4 tutorial with scene slides, playback, and download.",tags:["Bangla","tutorial video","MP4","transcript","Python"],added:"2026-10-11",featured:true,status:"active",flag:"Generated videos are temporary (up to 12 hours) and may disappear after a server restart or redeploy. Permanent cloud storage is not configured yet."}
-,{id:"s16",name:"Hidden Folder Shortcut Trick — Bangla Tutorial",url:"https://linkora-r5hm.onrender.com/projects/hidden-folder-shortcut-tutorial/",cat:"edu",desc:"Transcript-based Bengali slide tutorial with browser narration explaining the transparent-folder shortcut trick and its security limitations.",tags:["Windows","PowerToys","privacy","Bangla tutorial"],added:"2026-10-11",featured:true,status:"active",flag:"Visual hiding is not encryption or password protection. Use BitLocker, VeraCrypt, or proper account permissions for sensitive files."}
-];
-const $=s=>document.querySelector(s),app=$("#app");
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let data,toastT;
-function load(){try{const r=localStorage.getItem("linkora.v1");data=r?JSON.parse(r):null}catch(e){data=null}
- if(!data||!Array.isArray(data.sites))data={sites:SEED.slice(),cats:CATS.map(c=>({id:c[0],name:c[1],icon:c[2]}))};else{let changed=false;for(const s of SEED){if(!data.sites.some(x=>x.url===s.url)){data.sites.push(s);changed=true}}if(changed)save()}}
-function save(){try{localStorage.setItem("linkora.v1",JSON.stringify(data))}catch(e){toast("Could not save in this browser")}}
-function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toastT);toastT=setTimeout(()=>t.style.display="none",2400)}
-const catName=id=>(data.cats.find(c=>c.id===id)||{name:"Other"}).name;
-const host=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return u}};
-function hue(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))%360;return h}
-function logo(n,u){const ini=(n.match(/[A-Za-z0-9]/g)||["?"]).slice(0,2).join("").toUpperCase();const fallback=esc(ini);const icon="https://www.google.com/s2/favicons?domain="+encodeURIComponent(host(u||""))+"&sz=128";return `<div class="logoT" aria-hidden="true" style="background:hsl(${hue(n)} 70% 70%)"><img src="${esc(icon)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='${fallback}'"></div>`}
-function card(s){return `<article class="card"><div class="top">${logo(s.name,s.url)}<div style="min-width:0"><h3>${esc(s.name)}</h3><div class="dom">${esc(host(s.url))}</div></div></div>
-<p>${esc(s.desc)}</p>${s.flag?`<div class="warn bad">⚠ ${esc(s.flag)}</div>`:""}
-<div class="chips"><span class="tag">${esc(catName(s.cat))}</span>${(s.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
-<a class="btn sm" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer nofollow">Visit site</a></article>`}
-const active=()=>data.sites.filter(s=>s.status==="active");
-let F={q:"",cat:"",sort:"new"};
-function home(){const a=active(),feat=a.filter(s=>s.featured).slice(0,3),rec=[...a].sort((x,y)=>y.added.localeCompare(x.added)).slice(0,6);
-return `<section class="hero"><h1>The internet, organized.</h1><p>Linkora collects useful online tools in one place, sorted by category and searchable in a keystroke.</p>
-<div class="mt"><input id="hq" type="search" placeholder="Search tools, tags, categories" aria-label="Search tools" autocomplete="off"></div>
-<div class="row mt"><a class="btn p" href="#/categories">Explore categories</a><a class="btn" href="#/explore">Browse all tools</a></div></section>
-<section class="sec"><h2>Featured tools</h2>${feat.length?`<div class="grid">${feat.map(card).join("")}</div>`:`<div class="empty">Nothing featured yet. Star a tool from Manage.</div>`}</section>
-<section class="sec"><h2>Categories</h2><div class="grid">${catCards()}</div></section>
-<section class="sec"><h2>Recently added</h2><div class="grid">${rec.map(card).join("")}</div></section>
-<section class="sec lab"><h2>Automation Lab</h2><p class="mu">Paste a tutorial or transcript. Linkora pulls out the steps and scaffolds a Python project with a dry-run mode, config and tests.</p><a class="btn p" href="#/lab">Open the lab</a></section>`}
-function catCards(){return data.cats.map(c=>{const n=active().filter(s=>s.cat===c.id).length;return `<button class="card cat" data-act="cat" data-id="${esc(c.id)}"><b>${esc(c.icon)}</b><h3>${esc(c.name)}</h3><span class="mu">${n} tool${n===1?"":"s"}</span></button>`}).join("")}
-function filtered(){const q=F.q.trim().toLowerCase();let r=active().filter(s=>(!F.cat||s.cat===F.cat)&&(!q||[s.name,s.desc,catName(s.cat),(s.tags||[]).join(" ")].join(" ").toLowerCase().includes(q)));
- r.sort(F.sort==="az"?(a,b)=>a.name.localeCompare(b.name):(a,b)=>b.added.localeCompare(a.added));return r}
-function explore(){return `<h1>Explore</h1><div class="row mt"><input id="eq" type="search" style="flex:2;min-width:200px" placeholder="Search by name, description or tag" aria-label="Search" value="${esc(F.q)}">
-<select id="es" style="flex:1;min-width:150px" aria-label="Sort"><option value="new"${F.sort==="new"?" selected":""}>Recently added</option><option value="az"${F.sort==="az"?" selected":""}>A to Z</option></select></div>
-<div class="chips mt"><button class="chip${F.cat?"":" on"}" data-act="cat" data-id="">All</button>${data.cats.map(c=>`<button class="chip${F.cat===c.id?" on":""}" data-act="cat" data-id="${esc(c.id)}">${esc(c.name)}</button>`).join("")}</div>
-<div class="row mt"><span class="mu" id="cnt"></span><button class="btn sm" data-act="clear">Clear filters</button></div><div class="grid mt" id="res"></div>`}
-function results(){const r=filtered();$("#cnt").textContent=`${r.length} result${r.length===1?"":"s"}`;$("#res").innerHTML=r.length?r.map(card).join(""):`<div class="empty" style="grid-column:1/-1">No tools match. Try another word or clear the filters.</div>`}
-function categories(){return `<h1>Categories</h1><div class="grid mt">${catCards()}</div>`}
-function about(){return `<h1>About Linkora</h1><p class="mu" style="max-width:640px">Linkora is a curated directory of online tools. Entries are added only after you approve them. Services involving public SMS inboxes, phone numbers or bulk messaging carry a visible caution, and nothing here is an endorsement.</p>
-<p class="mu" style="max-width:640px">This version runs entirely in your browser. Your changes are stored in this browser only, so they are not shared and can be lost if you clear site data. Export JSON from Manage to back them up. New sites must resolve to a public DNS address before approval or JSON import; DNS resolution does not guarantee that a site is trustworthy or that every page is available.</p>`}
-/* manage */
-let P=[];
-function manage(){const all=data.sites;return `<h1>Manage</h1><div class="warn mt">This page has no login. It edits only your own browser's copy. Shared, protected admin needs a backend with real authentication, which is not configured.</div>
-<section class="sec"><h2>Add from transcript</h2><p class="mu" style="max-width:720px;font-size:13px">Linkora checks each domain for public DNS A/AAAA records before allowing approval. Non-resolving domains, shortened links and unchecked domains are blocked. DNS existence does not guarantee that a website is trustworthy or that its pages are currently working.</p><textarea id="tx" placeholder="Paste a transcript or text containing website names and links"></textarea><div class="row mt"><button class="btn p" data-act="extract">Extract websites</button><span class="mu" id="xmsg"></span></div><div id="prev"></div></section>
-<section class="sec"><h2>Directory (${all.length})</h2><div class="row"><button class="btn sm" data-act="export">Export JSON</button><label class="btn sm">Import JSON<input id="imp" type="file" accept="application/json" hidden></label></div>
-<div class="tbl mt">${all.map(s=>`<div class="card" style="margin-bottom:8px"><div class="row"><b>${esc(s.name)}</b><span class="mu dom">${esc(s.url)}</span><span class="tag">${esc(s.status)}</span></div><div class="row"><button class="btn sm" data-act="feat" data-id="${s.id}">${s.featured?"Unfeature":"Feature"}</button><button class="btn sm" data-act="arch" data-id="${s.id}">${s.status==="active"?"Archive":"Restore"}</button><button class="btn sm d" data-act="del" data-id="${s.id}">Delete</button></div></div>`).join("")}</div></section>
-<section class="sec"><h2>Add a category</h2><div class="row"><input id="nc" style="flex:1;min-width:180px" placeholder="Category name" aria-label="Category name"><button class="btn" data-act="addcat">Add category</button></div></section>`}
-const norm=u=>{try{u=u.trim().replace(/[)\].,;:!?'"]+$/,"");if(!/^https?:\/\//i.test(u))u="https://"+u;const x=new URL(u);if(!/\.[a-z]{2,}$/i.test(x.hostname))return null;x.hash="";return x.origin+(x.pathname==="/"?"":x.pathname.replace(/\/$/,""))+x.search}catch(e){return null}};
-
-// Fail closed: new domains must resolve to a public web address before approval/import.
-async function verifyDomain(url){
- try{
-  const parsed=new URL(url),h=parsed.hostname.toLowerCase();
-  if(!h||h==="localhost"||h.endsWith(".localhost")||h.endsWith(".local")||h.endsWith(".test")||h.endsWith(".invalid")||h.endsWith(".example")||h.includes(":"))return {ok:false,reason:"Not a public website domain"};
-  const answers=await Promise.all(["A","AAAA"].map(async type=>{
-   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),6500);
-   try{
-    const res=await fetch("https://dns.google/resolve?name="+encodeURIComponent(h)+"&type="+type,{headers:{accept:"application/dns-json"},cache:"no-store",signal:ctrl.signal});
-    if(!res.ok)return false;
-    const json=await res.json();
-    return json.Status===0&&Array.isArray(json.Answer)&&json.Answer.some(a=>Number(a.type)===1||Number(a.type)===28);
-   }catch(e){return false}finally{clearTimeout(timer)}
-  }));
-  return answers.some(Boolean)?{ok:true,reason:"Public DNS address found"}:{ok:false,reason:"No public A/AAAA address found"};
- }catch(e){return {ok:false,reason:"DNS lookup failed or could not be reached"}}
+/* Add each approved script here when its actual .BAT file has been committed under /downloads/. */
+const SCRIPTS = [];
+const ICONS={
+ system:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4M7 9l2 2-2 2m4 0h4"/>',
+ network:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>',
+ files:'<path d="M3 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+ productivity:'<path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="5"/>',
+ default:'<path d="M13 2 4 14h7l-1 8 10-13h-7l1-7z"/>'
+};
+const $=s=>document.querySelector(s);
+let category='all';
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function icon(name){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICONS[name]||ICONS.default)+'</svg>'}
+function draw(){
+ const q=$('#search').value.trim().toLowerCase();
+ const items=SCRIPTS.filter(s=>(category==='all'||s.category===category)&&(!q||[s.title,s.description,s.category,...(s.tags||[])].join(' ').toLowerCase().includes(q)));
+ $('#count').textContent=items.length+' script'+(items.length===1?'':'s');
+ if(!items.length){
+  $('#scriptGrid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">'+icon('default')+'</div><h3>'+(SCRIPTS.length?'No matching scripts':'Your automation library starts here')+'</h3><p>'+(SCRIPTS.length?'Try a different search term or choose another task category.':'No transcript-based BAT files have been published yet. Send your first Instagram Reel transcript in this chat; I’ll analyse it, build the Windows script, then add the real .BAT file and its download card here.')+'</p></div>';
+  return;
+ }
+ $('#scriptGrid').innerHTML=items.map((s,i)=>'<article class="script-card" style="animation-delay:'+(i*55)+'ms"><div class="card-top"><div class="task-icon">'+icon(s.category)+'</div><div><h3 class="card-title">'+esc(s.title)+'</h3><div class="subcat">'+esc((s.category||'task').replace('-',' '))+' automation</div></div></div><p class="desc">'+esc(s.description)+'</p><div class="chips">'+(s.tags||[]).map(t=>'<span class="chip">'+esc(t)+'</span>').join('')+'</div><div class="fileline">'+icon('files')+'<span>'+esc(s.file)+'</span></div><a class="btn primary download" href="'+esc(s.path)+'" download="'+esc(s.file)+'">'+icon('default')+' Download .BAT</a></article>').join('');
 }
-const SUS=/bomb|spam|otp|hack|crack|stresser|ddos|keylog|phish|bypass|sms.?flood/i,SHORT=/^(bit\.ly|t\.co|tinyurl\.com|goo\.gl|is\.gd)$/;
-function guess(t){const m=[["ai",/\b(ai|gpt|llm|chat)\b/],["dev",/(github|code|dev|api|git)/],["design",/(design|image|photo|figma|canva)/],["conv",/(convert|pdf|compress)/],["cloud",/(drive|cloud|storage)/],["sec",/(vpn|privacy|secure|lookup)/],["edu",/(learn|course|edu)/],["social",/(instagram|tiktok|youtube|twitter)/],["comm",/(sms|mail|call|chat|message)/],["ent",/(movie|music|game|video)/]];for(const [c,r] of m)if(r.test(t))return c;return "other"}
-async function extract(){const t=$("#tx").value,seen=new Set(),out=[];
- (t.match(/(?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s<>"']*)?/gi)||[]).forEach(raw=>{if(/^[\w.+-]+@/.test(raw)||/\.(png|jpg|jpeg|gif|js|css|py|txt|md)$/i.test(raw))return;const u=norm(raw);if(!u)return;const h=host(u),key=h.toLowerCase();if(seen.has(key))return;seen.add(key);
- const dup=data.sites.find(s=>host(s.url)===h),fl=[];if(SUS.test(t.slice(Math.max(0,t.indexOf(raw)-80),t.indexOf(raw)+80))||SUS.test(h))fl.push("Context or name suggests abusive use");if(SHORT.test(h))fl.push("Link shortener hides the real destination");if(/xn--/.test(h))fl.push("Punycode domain, check for lookalikes");
- const nm=h.split(".")[0];out.push({name:nm.charAt(0).toUpperCase()+nm.slice(1),url:u,cat:guess(h),desc:"",tags:[],dup:dup?dup.id:"",flags:fl,state:"pending",verifying:true,verified:false,verifyMessage:"Checking public DNS…"})});
- P=out;$("#xmsg").textContent=out.length?(out.length+" unique domain"+(out.length===1?"":"s")+" found; verifying before approval…"):"No valid website addresses found. Check the pasted text.";prev();
- const limited=out.slice(0,30);if(out.length>30)$("#xmsg").textContent="First 30 unique domains will be checked to avoid overload.";
- await Promise.all(limited.map(async p=>{const result=SHORT.test(host(p.url))?{ok:false,reason:"Link shortener cannot be verified to the final destination"}:await verifyDomain(p.url);p.verified=result.ok;p.verifying=false;p.verifyMessage=result.reason;}));
- out.slice(30).forEach(p=>{p.verifying=false;p.verified=false;p.verifyMessage="Not checked: only 30 domains are checked per paste";});
- if($("#prev"))prev();
- const verified=out.filter(p=>p.verified).length;
- if($("#xmsg"))$("#xmsg").textContent=verified+" verified; "+(out.length-verified)+" unverified/rejected. Only DNS-verified domains can be approved.";
-}
-function prev(){if(!$("#prev"))return;$("#prev").innerHTML=P.map((p,i)=>{
- if(p.state==="rejected")return "";
- const verify=p.verifying?'<div class="warn">◌ Checking public DNS records…</div>':p.verified?'<div class="tag" style="display:inline-block;color:#c7ff4d">✓ Domain verified: '+esc(p.verifyMessage||"Public DNS address found")+'</div>':'<div class="warn bad">✕ Not verified: '+esc(p.verifyMessage||"domain could not be verified")+'. This site cannot be added.</div>';
- const cats=data.cats.map(c=>'<option value="'+esc(c.id)+'"'+(c.id===p.cat?' selected':'')+'>'+esc(c.name)+'</option>').join("");
- const enabled=p.verified&&!p.verifying;
- return '<div class="card mt" data-i="'+i+'"><b>'+esc(p.url)+'</b>'+(p.dup?'<div class="warn">Already in the directory. Approving updates the existing entry.</div>':'')+verify+p.flags.map(f=>'<div class="warn bad">⚠ '+esc(f)+'. Manual review needed.</div>').join("")+
- '<div class="rev"><input data-f="name" value="'+esc(p.name)+'" aria-label="Name"><input data-f="desc" value="'+esc(p.desc)+'" placeholder="Description (write it yourself, none is invented)" aria-label="Description"><select data-f="cat" aria-label="Category">'+cats+'</select></div>'+
- '<div class="row"><button class="btn p sm" data-act="ok" data-i="'+i+'" '+(enabled?'':'disabled title="Verify the domain first"')+'>'+(p.dup?"Update entry":"Approve")+'</button><button class="btn sm" data-act="no" data-i="'+i+'">Reject</button></div></div>';
-}).join("")}
-function approve(i){const p=P[i];if(!p||p.verified!==true||p.verifying){toast("This domain is not verified. It cannot be added.");return}if(!p.name.trim()||!p.desc.trim()){toast("Add a name and a description first");return}
- const flag=p.flags.join(". ");if(p.dup){const s=data.sites.find(x=>x.id===p.dup);if(!s){toast("Existing entry was not found");return}Object.assign(s,{name:p.name,desc:p.desc,cat:p.cat});if(flag)s.flag=flag}
- else data.sites.push({id:"u"+Date.now()+i,name:p.name.trim(),url:p.url,cat:p.cat,desc:p.desc.trim(),tags:[],added:new Date().toISOString().slice(0,10),featured:false,status:"active",flag});
- p.state="rejected";save();toast("Saved — domain had a public DNS address");render()}
-/* lab */
-const HARM=/(otp|one.?time.?pass|sms.?bomb|call.?bomb|bulk (sms|call)|spam|flood|ddos|credential|steal|keylog|bypass (login|captcha|2fa)|scrape passwords|unauthori[sz]ed)/i;
-let LAB=null;
-function lab(){return `<h1>Automation Lab</h1><p class="mu" style="max-width:640px">Paste a tutorial or process description. Linkora extracts the steps and generates a Python project scaffold. It does not run any code, so nothing is tested or deployed here.</p>
-<textarea id="lt" class="mt" placeholder="1. Read a CSV of invoices&#10;2. Total the amounts per client&#10;3. Save a summary to report.csv"></textarea><div class="row mt"><button class="btn p" data-act="gen">Generate project</button></div><div id="labout"></div>`}
-function gen(){const t=$("#lt").value.trim();if(!t){$("#labout").innerHTML=`<div class="warn bad mt">Paste some instructions first.</div>`;return}
- let lines=t.split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-*•])\s*/,"").trim()).filter(l=>l.length>3);if(lines.length<2)lines=t.split(/(?<=[.!?])\s+/).filter(l=>l.length>3);
- const bad=lines.filter(l=>HARM.test(l)),ok=lines.filter(l=>!HARM.test(l));
- let h="";if(bad.length)h+=`<div class="warn bad mt"><b>${bad.length} step${bad.length>1?"s":""} not automated.</b> They involve harassment, spam, credential or OTP abuse, or security bypass, which Linkora will not generate:<ul>${bad.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>Safe alternative: use the official API or consent-based flow of the service involved.</div>`;
- if(!ok.length){$("#labout").innerHTML=h+`<div class="empty mt">No steps left to build.</div>`;return}
- const fn=ok.map((s,i)=>`def step_${i+1}(ctx, dry_run):\n    """${s.replace(/"""/g,"'''").slice(0,90)}"""\n    log.info("Step ${i+1}: %s", step_${i+1}.__doc__)\n    if dry_run:\n        log.info("[dry-run] would perform step ${i+1}")\n        return ctx\n    raise NotImplementedError("Implement step ${i+1}")\n`).join("\n");
- const files={"main.py":`"""Generated scaffold. Steps are stubs you must implement."""\nimport argparse, logging, os\n\nlog = logging.getLogger("project")\n\n${fn}\nSTEPS = [${ok.map((_,i)=>"step_"+(i+1)).join(", ")}]\n\n\ndef run(dry_run=True):\n    ctx = {"input": os.getenv("INPUT_PATH", "input.csv")}\n    for step in STEPS:\n        ctx = step(ctx, dry_run)\n    return ctx\n\n\nif __name__ == "__main__":\n    ap = argparse.ArgumentParser()\n    ap.add_argument("--execute", action="store_true", help="disable dry-run")\n    logging.basicConfig(level=logging.INFO)\n    run(dry_run=not ap.parse_args().execute)\n`,
- "test_main.py":`import main\n\n\ndef test_dry_run_completes():\n    assert main.run(dry_run=True) is not None\n`,"requirements.txt":"pytest>=8.0\n",".env.example":"INPUT_PATH=input.csv\n# Add API keys here. Never commit a real .env file.\n",
- "README.md":`# Project scaffold\n\nPython 3.10+. Generated from ${ok.length} step(s):\n\n${ok.map((s,i)=>`${i+1}. ${s}`).join("\n")}\n\n## Use\n\n    pip install -r requirements.txt\n    python main.py            # dry run\n    python main.py --execute  # real run (after implementing steps)\n    pytest\n\nStatus: generated only. Not executed or tested by Linkora.\n`};
- LAB=files;const names=Object.keys(files);
- $("#labout").innerHTML=h+`<section class="sec"><h2>Plan</h2><ol>${ok.map(s=>`<li>${esc(s)}</li>`).join("")}</ol><p class="mu">Inputs: INPUT_PATH (edit in .env). Add credentials and external services yourself where a step needs them.</p></section>
- <h2>Files</h2><div class="tabs">${names.map((n,i)=>`<button class="chip${i?"":" on"}" data-act="file" data-n="${n}">${n}</button>`).join("")}</div><pre id="fv"></pre><div class="row"><button class="btn sm" data-act="copy">Copy file</button></div>`;showFile(names[0])}
-let CUR="";function showFile(n){CUR=n;$("#fv").textContent=LAB[n];document.querySelectorAll("[data-act=file]").forEach(b=>b.classList.toggle("on",b.dataset.n===n))}
-/* router */
-function render(){const r=(location.hash.replace(/^#\/?/,"")||"home").split("/")[0];const v={home,explore,categories,lab,manage,about}[r]||home;app.innerHTML=v();
- document.querySelectorAll("[data-n]").forEach(a=>a.classList.toggle("on",a.dataset.n===(r==="home"?"home":r)));if(r==="explore")results();window.scrollTo(0,0)}
-document.addEventListener("input",e=>{const t=e.target;if(t.id==="hq"){F.q=t.value;if(t.value){location.hash="#/explore";setTimeout(()=>{const x=$("#eq");if(x){x.focus();x.setSelectionRange(99,99)}},0)}}
- else if(t.id==="eq"){F.q=t.value;results()}else if(t.id==="es"){F.sort=t.value;results()}
- else if(t.dataset.f){const i=+t.closest("[data-i]").dataset.i;P[i][t.dataset.f]=t.value}});
-document.addEventListener("change",e=>{const t=e.target;if(t.dataset&&t.dataset.f){const i=+t.closest("[data-i]").dataset.i;P[i][t.dataset.f]=t.value}
- if(t.id==="imp"&&t.files[0]){const f=new FileReader();f.onload=async()=>{try{const d=JSON.parse(f.result);if(!Array.isArray(d.sites)||!Array.isArray(d.cats))throw 0;
- const have=new Set(data.sites.map(s=>host(s.url))),raw=[];let skipped=0;
- d.sites.forEach(s=>{const u=s&&s.name?norm(String(s.url||"")):null;if(!u){skipped++;return}const h=host(u);if(have.has(h)){skipped++;return}have.add(h);raw.push({s,url:u})});
- const checked=await Promise.all(raw.slice(0,30).map(async x=>({s:x.s,url:x.url,check:await verifyDomain(x.url)})));skipped+=raw.length-checked.length;let n=0;
- checked.forEach(x=>{if(!x.check.ok){skipped++;return}const s=x.s;data.sites.push({id:"i"+Date.now()+n,name:String(s.name),url:x.url,cat:s.cat||"other",desc:String(s.desc||""),tags:Array.isArray(s.tags)?s.tags.map(String):[],added:s.added||new Date().toISOString().slice(0,10),featured:!!s.featured,status:s.status==="archived"?"archived":"active",flag:s.flag||""});n++});
- d.cats.forEach(c=>{if(c.id&&c.name&&!data.cats.some(x=>x.id===c.id))data.cats.push({id:String(c.id),name:String(c.name),icon:String(c.icon||"•")})});
- save();toast("Imported "+n+"; skipped "+skipped+" duplicate, unverified or unchecked site(s).");render()}catch(x){toast("Import failed: invalid Linkora JSON. No unchecked site was added.")}};f.readAsText(t.files[0])}});
-document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act,id=b.dataset.id,s=data.sites.find(x=>x.id===id);
- if(a==="cat"){F.cat=id;F.q="";location.hash="#/explore";if(location.hash==="#/explore")render()}
- else if(a==="clear"){F={q:"",cat:"",sort:"new"};render()}
- else if(a==="extract")extract();else if(a==="ok")approve(+b.dataset.i);else if(a==="no"){P[+b.dataset.i].state="rejected";prev()}
- else if(a==="feat"){s.featured=!s.featured;save();render()}else if(a==="arch"){s.status=s.status==="active"?"archived":"active";save();render()}
- else if(a==="del"){if(confirm("Delete "+s.name+"? This cannot be undone.")){data.sites=data.sites.filter(x=>x.id!==id);save();render()}}
- else if(a==="addcat"){const n=$("#nc").value.trim();if(!n){toast("Enter a category name");return}const cid=n.toLowerCase().replace(/[^a-z0-9]+/g,"-");if(data.cats.some(c=>c.id===cid)){toast("That category already exists");return}data.cats.push({id:cid,name:n,icon:n[0].toUpperCase()});save();render()}
- else if(a==="export"){const t=JSON.stringify(data,null,2);navigator.clipboard.writeText(t).then(()=>toast("JSON copied to clipboard"),()=>{$("#prev").innerHTML=`<textarea class="mt" readonly>${esc(t)}</textarea>`;toast("Copy the JSON below")})}
- else if(a==="gen")gen();else if(a==="file")showFile(b.dataset.n);else if(a==="copy")navigator.clipboard.writeText(LAB[CUR]).then(()=>toast("Copied"),()=>toast("Select the text and copy manually"))});
-window.addEventListener("hashchange",render);load();render();
-</script></body></html>
+$('#search').addEventListener('input',draw);
+$('#filters').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;category=b.dataset.cat;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));draw()});
+draw();
+</script>
+</body></html>
